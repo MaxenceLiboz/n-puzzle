@@ -50,6 +50,14 @@ Which mean we have **6 + 1 + 2 + 1 + 1 = 11 inversions**. Here the n-puzzle is *
 Now you must understand that the algroithm can be optimize with this.
 
 
+## The f score
+The **f score** is calculated doing f(x) = g(x) + h(x); where x is the current node, g(x) is the depth of the node and h(x) is the heuristic chose.  
+For this project we have to implement 3 Heuristics and the Manhatan distance must be one of them.  
+Therefore, we will have : 
+- The Mahatan distance
+- Linear Conflict + Manhattan Distance [check the mention part here](https://algorithmsinsight.wordpress.com/graph-theory-2/a-star-in-general/implementing-a-star-to-solve-n-puzzle/)  
+- Tiles out of place
+
 ## Sources
 [A* Algorithm | A* Algorithm Example](https://www.gatevidyalay.com/tag/a-star-search-algorithm-example/)  
 [IDA-Star(IDA*) Algorithm in general](https://algorithmsinsight.wordpress.com/graph-theory-2/ida-star-algorithm-in-general/)  
