@@ -11,6 +11,11 @@ The **closed** list must be a a list that allow the algorithm to check if a node
 >**CPP Reference** : Internally, the elements are not sorted in any particular order, but organized into buckets. Which bucket an element is placed into depends entirely on the hash of its value. This allows fast access to individual elements, since once a hash is computed, it refers to the exact bucket the element is placed into.  
 Container elements may not be modified (even by non const iterators) since modification could change an element's hash and corrupt the container. 
 
+The **node** must hold a **N*N 1D array**, the **g(x), h(x) and f(x) score**, an **ID** and the **ID of its parent** (in order to go backward, we might just need the close set but I am not sure, We might also be able to use the hash as the ID).  
+The **open set** must hold the **node** above.  
+The **close set** must hold the **node** above.  
+The **structure / class itself** must hold the **open and close set**, a variable representing the maximum number of state at the same time in the **close set**, the **starting node** and the **goal node**
+
 
 ## Sources
 [Priority queue](https://en.cppreference.com/w/cpp/container/priority_queue)  
