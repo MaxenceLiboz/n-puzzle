@@ -3,8 +3,8 @@
 
 **A-star (A\*)** can be used to solve the n-puzzle. You can find **[here](https://algorithmsinsight.wordpress.com/graph-theory-2/a-star-in-general/implementing-a-star-to-solve-n-puzzle/)** a realy good explaination of it.  
 If I have to summurize it:  
-- First I would say that each node represent a state of the puzzle. Therefore, each node has a maxium of 4 new children (the blank part going up, down, right or left). It will then expend until the n-puzzle is solve.
-- Second each node is going to be given a score depending on the **heuristic** which is named **f**. The node with the lower **f score** is going to be chosen to continue the loop.  
+- First, I would say that each node represent a state of the puzzle. Therefore, each node has a maxium of 4 new childrens (the blank part going up, down, right or left). It will then expend until the n-puzzle is solve.
+- Second, each node is going to be given a score depending on the **heuristic** which is named **f**. The node with the lower **f score** is chosen to continue the loop.  
 
 This algorithm is storing in an **open** list the nodes that are not visited and in a **closed** list the nodes that are visisted, if there are no more **open** nodes the n-puzzle is not solvable.  
 
