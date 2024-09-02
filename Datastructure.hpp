@@ -24,6 +24,7 @@ private:
 
     bool isLinearConflict(int i, int j);
     void setParentPuzzle(std::vector<int> puzzle);
+    int getInversionCount();
 
 public:
     // Constructors and Destructors
@@ -45,6 +46,9 @@ public:
 
     // Move functions
     std::vector<Datastructure *> getChildren();
+
+    // Utility functions
+    bool isSolvable();
 };
 
 #endif

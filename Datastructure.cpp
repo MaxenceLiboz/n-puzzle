@@ -131,3 +131,36 @@ bool Datastructure::isLinearConflict(int i, int j){
     }
     return false;
 }
+
+int Datastructure::getInversionCount() {
+    int inversionCount = 0;
+    int puzzleSize = puzzle.size();
+    for (int i = 0; i < puzzleSize; i++) {
+        if (puzzle[i] == -1) {
+            continue;
+        }
+        for (int j = i + 1; j < puzzleSize; j++) {
+            if (puzzle[j] != -1 && puzzle[i] > puzzle[j]) {
+                inversionCount++;
+            }
+        }
+    }
+    return inversionCount;
+}
+
+bool Datastructure::isSolvable() {
+    int inversionCount = getInversionCount();
+    std::size_t puzzleSize = puzzle.size();
+    if (this->dim % 2 == 1) {
+        return inversionCount % 2 == 0;
+    } else {
+        int blankTileRow = 0;
+        for (std::size_t i = 0; i < puzzleSize; i++) {
+            if (puzzle[i] == -1) {
+                blankTileRow = i / this->dim; // the index start from 0 so we can go from the top
+                break;
+            }
+        }
+        return (inversionCount + blankTileRow) % 2 == 1;
+    }
+}
