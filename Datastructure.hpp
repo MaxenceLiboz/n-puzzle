@@ -4,6 +4,7 @@
 #include <vector>
 #include <tgmath.h>
 #include <stdexcept>
+#include <iostream>
 
 enum Heuristic
 {
@@ -35,6 +36,7 @@ public:
     std::vector<int> getPuzzle();
     double getFxScore();
     Datastructure *getParent();
+    int getDim();
 
     // Setters
     void setFxScore();
@@ -49,6 +51,9 @@ public:
 
     // Utility functions
     bool isSolvable();
+
+
 };
 
+std::ostream &operator<<(std::ostream &os, Datastructure &datastructure);
 #endif
