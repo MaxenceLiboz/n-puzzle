@@ -6,6 +6,13 @@ int main() {
 
     std::cout << datastructure->getFxScore() << std::endl;
     std::cout << (datastructure->isSolvable() ? "TRUE" : "FALSE") << std::endl;
+    std::cout << datastructure << std::endl;
+
+    std::vector<Datastructure *> children = datastructure->getChildren();
+    for (std::size_t i = 0; i < children.size(); i++)
+    {
+        std::cout << *children[i] << std::endl;
+    }
 
     delete datastructure;
 }
