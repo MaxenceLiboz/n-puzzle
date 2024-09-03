@@ -6,13 +6,17 @@
 #include <stdexcept>
 #include <iostream>
 #include <queue>
+#include <unordered_set>
 
 enum Heuristic
 {
     MANHATTAN_DISTANCE,
     MISPLACED_TILES,
-    LINEAR_CONFLICT_AND_MANHATTAN_DISTANCE
+    LINEAR_CONFLICT_AND_MANHATTAN_DISTANCE,
+    EUCLEDIAN_DISTANCE
 };
+
+struct CmpDatastructurePtr;
 
 class Datastructure
 {
@@ -35,9 +39,11 @@ public:
 
     // Getters
     std::vector<int> getPuzzle();
-    double getFxScore();
+    double getFxScore() const;
+    double getGxScore() const;
     Datastructure *getParent();
     int getDim();
+    
 
     // Setters
     void setFxScore();
@@ -46,17 +52,23 @@ public:
     double calculateManhattanDistance();
     double calculateMisplacedTiles();
     double calculateLinearConflictAndManhattanDistance();
+    double calculateEucledianDistance();
 
     // Move functions
-    std::priority_queue<Datastructure *> getChildren();
+    void setChildenIntoList(std::priority_queue<Datastructure *, std::vector<Datastructure*>, CmpDatastructurePtr> &openList);
 
     // Utility functions
     bool isSolvable();
-
+    bool isValid();
 
 };
 
+struct CmpDatastructurePtr
+{
+    bool operator()(const Datastructure* lhs, const Datastructure* rhs) const;
+};
+
+
 std::ostream &operator<<(std::ostream &os, Datastructure &datastructure);
-bool operator<(Datastructure &lhs, Datastructure &rhs);
 
 #endif
