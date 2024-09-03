@@ -5,6 +5,7 @@
 #include <tgmath.h>
 #include <stdexcept>
 #include <iostream>
+#include <queue>
 
 enum Heuristic
 {
@@ -47,7 +48,7 @@ public:
     double calculateLinearConflictAndManhattanDistance();
 
     // Move functions
-    std::vector<Datastructure *> getChildren();
+    std::priority_queue<Datastructure *> getChildren();
 
     // Utility functions
     bool isSolvable();
@@ -56,4 +57,6 @@ public:
 };
 
 std::ostream &operator<<(std::ostream &os, Datastructure &datastructure);
+bool operator<(Datastructure &lhs, Datastructure &rhs);
+
 #endif
