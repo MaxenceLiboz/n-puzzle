@@ -1,21 +1,64 @@
 #include "main.hpp"
 
 int main() {
-    std::vector<int> v = {6, 13, 7, 10, 8, 9, 11, 0, 15, 2, 12, 5, 14, 3, 1, 4};
-    Datastructure *datastructure = new Datastructure(v, LINEAR_CONFLICT_AND_MANHATTAN_DISTANCE, NULL);
+    std::priority_queue<Datastructure *, std::vector<Datastructure*>, CmpDatastructurePtr> openList;
+    std::unordered_set<Datastructure *> closedList;
 
-    std::cout << datastructure->getFxScore() << std::endl;
-    std::cout << (datastructure->isSolvable() ? "TRUE" : "FALSE") << std::endl;
-    std::cout << *datastructure << std::endl;
+    std::vector<int> v = {1, 5, 3, 2, 0, 6, 4, 8, 7};
+    Datastructure *node = new Datastructure(v, EUCLEDIAN_DISTANCE, NULL);
+    openList.push(node);
 
-    std::priority_queue<Datastructure *> children = datastructure->getChildren();
-    std::cout << children.top()->getFxScore() << std::endl;
+    std::chrono::_V2::system_clock::time_point start = std::chrono::high_resolution_clock::now();
 
-    while (!children.empty()) {
-        Datastructure *child = children.top();
-        children.pop();
+    if (!node->isSolvable()) {
+        std::cout << "Puzzle is not solvable" << std::endl;
+        return 0;
+    }
+
+    while (!openList.empty() && !openList.top()->isValid()) {
+        Datastructure *current;
+        while (!openList.empty()) {
+            current = openList.top();
+            openList.pop();
+            if (closedList.find(current) == closedList.end()) {
+                closedList.insert(current);
+                break;
+            } else {
+                delete current;
+            }
+        }
+
+        current->setChildenIntoList(openList);
+    }
+
+    std::chrono::_V2::system_clock::time_point stop = std::chrono::high_resolution_clock::now();
+
+
+    if (openList.empty()) {
+        std::cout << "Time taken : " << std::chrono::duration_cast<std::chrono::milliseconds>(stop - start).count() << " ms" << std::endl;
+        std::cout << "No solution found" << std::endl;
+    } else {
+        Datastructure *current = openList.top();
+        double depth = current->getGxScore();
+        while (current != NULL) {
+            std::cout << *current << std::endl;
+            current = current->getParent();
+        }
+        std::cout << "Time taken : " << std::chrono::duration_cast<std::chrono::milliseconds>(stop - start).count() << " ms" << std::endl;
+        std::cout << "Depth: " << depth << std::endl;
+        std::cout << "Solution found, go upward to check the path" << std::endl;
+    }
+
+
+    while (!openList.empty()) {
+        Datastructure *child = openList.top();
+        openList.pop();
         delete child;
     }
-    delete datastructure;
+    while (!closedList.empty()) {
+        Datastructure *child = *closedList.begin();
+        closedList.erase(child);
+        delete child;
+    }
 }
 
