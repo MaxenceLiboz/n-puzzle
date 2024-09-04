@@ -50,10 +50,6 @@ void Node::setFxScore() {
     {
         fxScore = calculateMisplacedTiles() + gxScore;
     }
-    else if (LINEAR_CONFLICT_AND_MANHATTAN_DISTANCE == heuristic)
-    {
-        fxScore = calculateLinearConflictAndManhattanDistance() + gxScore;
-    }
     else if (EUCLEDIAN_DISTANCE == heuristic)
     {
         fxScore = calculateEucledianDistance() + gxScore;
@@ -119,45 +115,6 @@ double Node::calculateEucledianDistance() {
     return eucledianDistance;
 }
 
-double Node::calculateLinearConflictAndManhattanDistance() {
-    double linearConflict = 0;
-    int puzzleSize = puzzle.size();
-    for (int i = 0; i < puzzleSize; i++)
-    {
-        if (i % this->dim != this->dim - 1 && isLinearConflict(i, i + 1)) { // Check right tile
-            linearConflict++;
-        } else if (i + this->dim < puzzleSize && isLinearConflict(i, i + this->dim)) { // Check down tile
-            linearConflict++;
-        } else if (i % this->dim != 0 && isLinearConflict(i, i - 1)) { // Check left tile
-            linearConflict++;
-        } else if (i >= this->dim && isLinearConflict(i, i - this->dim)) { // Check up tile
-            linearConflict++;
-        } 
-    }
-    return linearConflict + calculateManhattanDistance();
-}
-
-bool Node::isLinearConflict(int i, int j){
-    int value = puzzle[i];
-    if (value == -1) {
-        return false;
-    }
-    int targetRow = value / this->dim;
-    int targetColumn = value % this->dim;
-    int row = i / this->dim;
-    int column = i % this->dim;
-
-    int otherValue = puzzle[j];
-    int otherValueTargetRow = otherValue / this->dim;
-    int otherValueTargetColumn = otherValue % this->dim;
-    int otherValueRow = j / this->dim;
-    int otherValueColumn = j % this->dim;
-
-    if (targetRow == otherValueRow && targetColumn == otherValueColumn && otherValueTargetColumn == column && otherValueTargetRow == row) {
-        return true;
-    }
-    return false;
-}
 
 int Node::getInversionCount() {
     int inversionCount = 0;
