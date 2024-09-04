@@ -1,5 +1,5 @@
-#ifndef DATASTRUCTURE_HPP
-#define DATASTRUCTURE_HPP
+#ifndef Node_HPP
+#define Node_HPP
 
 #include <vector>
 #include <tgmath.h>
@@ -16,14 +16,14 @@ enum Heuristic
     EUCLEDIAN_DISTANCE
 };
 
-struct CmpDatastructurePtr;
+struct CmpNodePtr;
 
-class Datastructure
+class Node
 {
 private:
     std::vector<int> puzzle;
     double fxScore;
-    Datastructure *parent;
+    Node *parent;
     int dim;
     Heuristic heuristic;
     int gxScore;
@@ -34,14 +34,14 @@ private:
 
 public:
     // Constructors and Destructors
-    Datastructure(std::vector<int> puzzle, Heuristic heuristic, Datastructure *parent);
-    ~Datastructure();
+    Node(std::vector<int> puzzle, Heuristic heuristic, Node *parent);
+    ~Node();
 
     // Getters
     std::vector<int> getPuzzle();
     double getFxScore() const;
     double getGxScore() const;
-    Datastructure *getParent();
+    Node *getParent();
     int getDim();
     
 
@@ -55,7 +55,7 @@ public:
     double calculateEucledianDistance();
 
     // Move functions
-    void setChildenIntoList(std::priority_queue<Datastructure *, std::vector<Datastructure*>, CmpDatastructurePtr> &openList);
+    void setChildenIntoList(std::priority_queue<Node *, std::vector<Node*>, CmpNodePtr> &openList);
 
     // Utility functions
     bool isSolvable();
@@ -63,12 +63,12 @@ public:
 
 };
 
-struct CmpDatastructurePtr
+struct CmpNodePtr
 {
-    bool operator()(const Datastructure* lhs, const Datastructure* rhs) const;
+    bool operator()(const Node* lhs, const Node* rhs) const;
 };
 
 
-std::ostream &operator<<(std::ostream &os, Datastructure &datastructure);
+std::ostream &operator<<(std::ostream &os, Node &Node);
 
 #endif
