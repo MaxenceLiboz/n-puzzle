@@ -2,7 +2,7 @@
 #define MAIN_HPP
 
 #include <iostream>
-#include "Datastructure.hpp"
+#include "Node.hpp"
 #include <chrono>
 
 #endif

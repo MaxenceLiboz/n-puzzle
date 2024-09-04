@@ -13,7 +13,7 @@ FLAGS				=	-Wall -Wextra -Werror
 RM					=	rm -rf
 
 SRCS =  main.cpp \
-		Datastructure.cpp 
+		Node.cpp 
 NAME = ft_puzzle
 
 .PHONY: all

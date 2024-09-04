@@ -1,11 +1,12 @@
 #include "main.hpp"
 
 int main() {
-    std::priority_queue<Datastructure *, std::vector<Datastructure*>, CmpDatastructurePtr> openList;
-    std::unordered_set<Datastructure *> closedList;
+    std::priority_queue<Node *, std::vector<Node*>, CmpNodePtr> openList;
+    std::unordered_set<Node *> closedList;
 
     std::vector<int> v = {1, 5, 3, 2, 0, 6, 4, 8, 7};
-    Datastructure *node = new Datastructure(v, EUCLEDIAN_DISTANCE, NULL);
+    // std::vector<int> v = {4, 5, 1, 2, 8, 10, 6, 3, 9, 14, 15, 7, 12, 11, 13, 0};
+    Node *node = new Node(v, MANHATTAN_DISTANCE, NULL);
     openList.push(node);
 
     std::chrono::_V2::system_clock::time_point start = std::chrono::high_resolution_clock::now();
@@ -16,7 +17,7 @@ int main() {
     }
 
     while (!openList.empty() && !openList.top()->isValid()) {
-        Datastructure *current;
+        Node *current;
         while (!openList.empty()) {
             current = openList.top();
             openList.pop();
@@ -38,7 +39,7 @@ int main() {
         std::cout << "Time taken : " << std::chrono::duration_cast<std::chrono::milliseconds>(stop - start).count() << " ms" << std::endl;
         std::cout << "No solution found" << std::endl;
     } else {
-        Datastructure *current = openList.top();
+        Node *current = openList.top();
         double depth = current->getGxScore();
         while (current != NULL) {
             std::cout << *current << std::endl;
@@ -51,12 +52,12 @@ int main() {
 
 
     while (!openList.empty()) {
-        Datastructure *child = openList.top();
+        Node *child = openList.top();
         openList.pop();
         delete child;
     }
     while (!closedList.empty()) {
-        Datastructure *child = *closedList.begin();
+        Node *child = *closedList.begin();
         closedList.erase(child);
         delete child;
     }

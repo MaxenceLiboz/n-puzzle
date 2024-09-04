@@ -9,4 +9,4 @@ For a puzzle NxN the bigger the N is the higher the resolution time is goig to b
 [Documentation](/Documentation/Algorithm.md)
 
 ## Data structure
-[Documentation](/Documentation/Datastructure.md)
+[Documentation](/Documentation/Node.md)

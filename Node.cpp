@@ -1,6 +1,6 @@
-#include "Datastructure.hpp"
+#include "Node.hpp"
 
-Datastructure::Datastructure(std::vector<int> puzzle, Heuristic heuristic, Datastructure *parent) {
+Node::Node(std::vector<int> puzzle, Heuristic heuristic, Node *parent) {
     if (sqrt(puzzle.size()) != (int)sqrt(puzzle.size())) {
         throw std::invalid_argument("Puzzle size must be a perfect square.");
     }
@@ -19,29 +19,29 @@ Datastructure::Datastructure(std::vector<int> puzzle, Heuristic heuristic, Datas
     setFxScore();
 }
 
-Datastructure::~Datastructure() {}
+Node::~Node() {}
 
-std::vector<int> Datastructure::getPuzzle() {
+std::vector<int> Node::getPuzzle() {
     return puzzle;
 }
 
-double Datastructure::getFxScore() const {
+double Node::getFxScore() const {
     return fxScore;
 }
 
-double Datastructure::getGxScore() const {
+double Node::getGxScore() const {
     return gxScore;
 }
 
-Datastructure *Datastructure::getParent() {
+Node *Node::getParent() {
     return parent;
 }
 
-int Datastructure::getDim() {
+int Node::getDim() {
     return dim;
 }
 
-void Datastructure::setFxScore() {
+void Node::setFxScore() {
     if (MANHATTAN_DISTANCE == heuristic)
     {
         fxScore = calculateManhattanDistance() + gxScore;
@@ -64,7 +64,7 @@ void Datastructure::setFxScore() {
     }
 }
 
-void Datastructure::setParentPuzzle(std::vector<int> puzzle) {
+void Node::setParentPuzzle(std::vector<int> puzzle) {
     int puzzleSize = puzzle.size();
     for (int i = 0; i < puzzleSize; i++)
     {
@@ -72,7 +72,7 @@ void Datastructure::setParentPuzzle(std::vector<int> puzzle) {
     }
 }
 
-double Datastructure::calculateManhattanDistance() {
+double Node::calculateManhattanDistance() {
     double manhattanDistance = 0;
     int puzzleSize = puzzle.size();
     for (int i = 0; i < puzzleSize; i++)
@@ -89,7 +89,7 @@ double Datastructure::calculateManhattanDistance() {
     return manhattanDistance;
 }
 
-double Datastructure::calculateMisplacedTiles() {
+double Node::calculateMisplacedTiles() {
     double misplacedTiles = 0;
     int puzzleSize = puzzle.size();
     for (int i = 0; i < puzzleSize; i++)
@@ -102,7 +102,7 @@ double Datastructure::calculateMisplacedTiles() {
     return misplacedTiles;
 }
 
-double Datastructure::calculateEucledianDistance() {
+double Node::calculateEucledianDistance() {
     double eucledianDistance = 0;
     int puzzleSize = puzzle.size();
     for (int i = 0; i < puzzleSize; i++)
@@ -119,7 +119,7 @@ double Datastructure::calculateEucledianDistance() {
     return eucledianDistance;
 }
 
-double Datastructure::calculateLinearConflictAndManhattanDistance() {
+double Node::calculateLinearConflictAndManhattanDistance() {
     double linearConflict = 0;
     int puzzleSize = puzzle.size();
     for (int i = 0; i < puzzleSize; i++)
@@ -137,7 +137,7 @@ double Datastructure::calculateLinearConflictAndManhattanDistance() {
     return linearConflict + calculateManhattanDistance();
 }
 
-bool Datastructure::isLinearConflict(int i, int j){
+bool Node::isLinearConflict(int i, int j){
     int value = puzzle[i];
     if (value == -1) {
         return false;
@@ -159,7 +159,7 @@ bool Datastructure::isLinearConflict(int i, int j){
     return false;
 }
 
-int Datastructure::getInversionCount() {
+int Node::getInversionCount() {
     int inversionCount = 0;
     int puzzleSize = puzzle.size();
     for (int i = 0; i < puzzleSize; i++) {
@@ -175,24 +175,26 @@ int Datastructure::getInversionCount() {
     return inversionCount;
 }
 
-bool Datastructure::isSolvable() {
+bool Node::isSolvable() {
     int inversionCount = getInversionCount();
     std::size_t puzzleSize = puzzle.size();
     if (this->dim % 2 == 1) {
         return inversionCount % 2 == 0;
     } else {
         int blankTileRow = 0;
+        int j = puzzleSize - 1;
         for (std::size_t i = 0; i < puzzleSize; i++) {
-            if (puzzle[i] == -1) {
-                blankTileRow = i / this->dim; // the index start from 0 so we can go from the top
+            if (puzzle[j] == -1) {
+                blankTileRow = (i / this->dim) + 1;
                 break;
             }
+            j--;
         }
         return (inversionCount + blankTileRow) % 2 == 1;
     }
 }
 
-bool Datastructure::isValid() {
+bool Node::isValid() {
     int puzzleSize = puzzle.size();
     for (int i = 0; i < puzzleSize; i++) {
         if (puzzle[i] == -1) {
@@ -205,7 +207,7 @@ bool Datastructure::isValid() {
     return true;
 }
 
-void Datastructure::setChildenIntoList(std::priority_queue<Datastructure *, std::vector<Datastructure*>, CmpDatastructurePtr> &openList) {
+void Node::setChildenIntoList(std::priority_queue<Node *, std::vector<Node*>, CmpNodePtr> &openList) {
     int puzzleSize = puzzle.size();
     int blankTileIndex = 0;
     for (int i = 0; i < puzzleSize; i++) {
@@ -218,33 +220,33 @@ void Datastructure::setChildenIntoList(std::priority_queue<Datastructure *, std:
     if (blankTileIndex % this->dim != 0) {
         std::vector<int> leftPuzzle = puzzle;
         std::swap(leftPuzzle[blankTileIndex], leftPuzzle[blankTileIndex - 1]);
-        openList.push(new Datastructure(leftPuzzle, heuristic, this));
+        openList.push(new Node(leftPuzzle, heuristic, this));
     }
 
     if (blankTileIndex % this->dim != this->dim - 1) {
         std::vector<int> rightPuzzle = puzzle;
         std::swap(rightPuzzle[blankTileIndex], rightPuzzle[blankTileIndex + 1]);
-        openList.push(new Datastructure(rightPuzzle, heuristic, this));
+        openList.push(new Node(rightPuzzle, heuristic, this));
     }
 
     if (blankTileIndex >= this->dim) {
         std::vector<int> upPuzzle = puzzle;
         std::swap(upPuzzle[blankTileIndex], upPuzzle[blankTileIndex - this->dim]);
-        openList.push(new Datastructure(upPuzzle, heuristic, this));
+        openList.push(new Node(upPuzzle, heuristic, this));
     }
 
     if (blankTileIndex + this->dim < puzzleSize) {
         std::vector<int> downPuzzle = puzzle;
         std::swap(downPuzzle[blankTileIndex], downPuzzle[blankTileIndex + this->dim]);
-        openList.push(new Datastructure(downPuzzle, heuristic, this));
+        openList.push(new Node(downPuzzle, heuristic, this));
     }
 }
 
-std::ostream &operator<<(std::ostream &os, Datastructure &datastructure) {
-    std::vector<int> datapuzzle = datastructure.getPuzzle();
+std::ostream &operator<<(std::ostream &os, Node &Node) {
+    std::vector<int> datapuzzle = Node.getPuzzle();
     int puzzleSize = datapuzzle.size();
     for (int i = 0; i < puzzleSize; i++) {
-        if (i % datastructure.getDim() == 0) {
+        if (i % Node.getDim() == 0) {
             os << std::endl;
         }
         if (datapuzzle[i] == -1) {
@@ -257,6 +259,6 @@ std::ostream &operator<<(std::ostream &os, Datastructure &datastructure) {
     return os;
 }
 
-bool CmpDatastructurePtr::operator()(const Datastructure* lhs, const Datastructure* rhs) const {
+bool CmpNodePtr::operator()(const Node* lhs, const Node* rhs) const {
     return lhs->getFxScore() > rhs->getFxScore();
 }
