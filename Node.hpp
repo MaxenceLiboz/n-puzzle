@@ -51,7 +51,6 @@ public:
     // Heuristic functions
     double calculateManhattanDistance();
     double calculateMisplacedTiles();
-    double calculateLinearConflictAndManhattanDistance();
     double calculateEucledianDistance();
 
     // Move functions
