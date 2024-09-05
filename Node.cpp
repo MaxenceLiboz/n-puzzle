@@ -137,8 +137,7 @@ double Node::calculateMisplacedTiles() {
     int puzzleSize = puzzle.size();
     for (int i = 0; i < puzzleSize; i++)
     {
-        int value = puzzle[i];
-        if (value != i && value != -1) {
+        if (puzzle[i] != goal[i] && puzzle[i] != 0) {
             misplacedTiles++;
         }
     }
@@ -151,11 +150,12 @@ double Node::calculateEucledianDistance() {
     for (int i = 0; i < puzzleSize; i++)
     {
         int value = puzzle[i];
-        if (value != -1) {
+        ptrdiff_t pos = std::distance(goal.begin(), std::find(goal.begin(), goal.end(), value));
+        if (value != 0) {
             int row = i / this->dim;
             int column = i % this->dim;
-            int targetRow = value / this->dim;
-            int targetColumn = value % this->dim;
+            int targetRow = pos / this->dim;
+            int targetColumn = pos % this->dim;
             eucledianDistance += sqrt(pow(row - targetRow, 2) + pow(column - targetColumn, 2));
         }
     }
