@@ -33,7 +33,6 @@ private:
     Node *parent;
     Heuristic heuristic;
 
-    bool isLinearConflict(int i, int j);
     int getInversionCount(std::vector<int> &puzzle);
     int getParity(std::vector<int> &puzzle);
 
