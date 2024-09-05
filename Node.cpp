@@ -207,7 +207,7 @@ bool Node::isValid() {
     return true;
 }
 
-void Node::setChildenIntoList(std::priority_queue<Node *, std::vector<Node*>, CmpNodePtr> &openList) {
+void Node::setChildrenIntoList(std::priority_queue<Node *, std::vector<Node*>, CmpNodePtr> &openList) {
     int puzzleSize = puzzle.size();
     int blankTileIndex = 0;
     for (int i = 0; i < puzzleSize; i++) {

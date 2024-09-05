@@ -55,7 +55,7 @@ public:
     double calculateEucledianDistance();
 
     // Move functions
-    void setChildenIntoList(std::priority_queue<Node *, std::vector<Node*>, CmpNodePtr> &openList);
+    void setChildrenIntoList(std::priority_queue<Node *, std::vector<Node*>, CmpNodePtr> &openList);
 
     // Utility functions
     bool isSolvable();
