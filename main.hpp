@@ -3,6 +3,6 @@
 
 #include <iostream>
 #include "Node.hpp"
-#include <chrono>
+#include "NPuzzle.hpp"
 
 #endif

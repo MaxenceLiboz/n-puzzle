@@ -6,7 +6,8 @@
 #include <stdexcept>
 #include <iostream>
 #include <queue>
-#include <unordered_set>
+#include <iterator>
+#include <algorithm>
 
 enum Heuristic
 {
@@ -46,7 +47,7 @@ public:
     ~Node();
 
     // Getters
-    std::vector<int> getPuzzle();
+    std::vector<int> getPuzzle() const;
     double getFxScore() const;
     double getGxScore() const;
     Node *getParent();
@@ -60,7 +61,7 @@ public:
     double calculateEucledianDistance();
 
     // Move functions
-    void setChildrenIntoList(std::priority_queue<Node *, std::vector<Node*>, CmpNodePtr> &openList);
+    int setChildrenIntoList(std::priority_queue<Node *, std::vector<Node*>, CmpNodePtr> &openList);
 
     // Utility functions
     bool isSolvable();
@@ -71,6 +72,11 @@ public:
 struct CmpNodePtr
 {
     bool operator()(const Node* lhs, const Node* rhs) const;
+};
+
+struct HashNode
+{
+    std::size_t operator()(const Node *node) const;
 };
 
 
