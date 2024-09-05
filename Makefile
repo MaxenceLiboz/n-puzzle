@@ -5,7 +5,7 @@
 # MATRIX_DIR		= matrix	
 
 
-INCLUDES	=	main.hpp
+INCLUDES	=	main.hpp \
 # 				${MATRIX_DIR}/Matrix.hpp								
 
 CC					=	c++
@@ -13,7 +13,9 @@ FLAGS				=	-Wall -Wextra -Werror
 RM					=	rm -rf
 
 SRCS =  main.cpp \
-		Node.cpp 
+		Node.cpp \
+		Parser.cpp
+		
 NAME = ft_puzzle
 
 .PHONY: all
