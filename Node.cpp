@@ -1,5 +1,8 @@
 #include "Node.hpp"
 
+std::vector<int> Node::goal;
+int Node::goalParity;
+
 Node::Node(std::vector<int> puzzle, Heuristic heuristic, Node *parent) {
     if (sqrt(puzzle.size()) != (int)sqrt(puzzle.size())) {
         throw std::invalid_argument("Puzzle size must be a perfect square.");
@@ -8,13 +11,14 @@ Node::Node(std::vector<int> puzzle, Heuristic heuristic, Node *parent) {
     this->heuristic = heuristic;
     this->dim = sqrt(puzzle.size());
 
+    this->puzzle = puzzle;
     if (parent == NULL) {
-        setParentPuzzle(puzzle);
         this->gxScore = 0;
     } else {
-        this->puzzle = puzzle;
         this->gxScore = parent->gxScore + 1;
     }
+
+    setGoalsAndParities();
 
     setFxScore();
 }
@@ -41,6 +45,56 @@ int Node::getDim() {
     return dim;
 }
 
+void Node::setGoalsAndParities() {
+    if (goal.size() == 0) {
+        std::vector<int> goalState(this->dim * this->dim, 0);
+        int number = 1;
+        int top = 0, left = 0, bottom = this->dim - 1, right = this->dim -1;
+        int finishIndex = 0;
+
+        while (top < bottom && left < right) {
+
+            // Fill top row
+           for (int i = left; i <= right; ++i) {
+                finishIndex = top * this->dim + i;
+                goalState[finishIndex] = number++;
+            }
+            ++top;
+
+            // Fill right column
+            for (int i = top; i <= bottom; ++i) {
+                finishIndex = i * this->dim + right;
+                goalState[finishIndex] = number++;
+            }
+            --right;
+
+            // Fill bottom row
+            if (top <= bottom) {
+                for (int i = right; i >= left; --i) {
+                    finishIndex = bottom * this->dim + i;
+                    goalState[finishIndex] = number++;
+                }
+                --bottom;
+            }
+
+            // Fill left column
+            if (left <= right) {
+                for (int i = bottom; i >= top; --i) {
+                    finishIndex = i * this->dim + left;
+                    goalState[finishIndex] = number++;
+                }
+                ++left;
+            } 
+        }
+        if (this->dim % 2 == 0) {
+            goalState[finishIndex] = 0;
+        }
+        this->goal = goalState;
+        this->goalParity = getParity(this->goal);
+    }
+    this->puzzleParity = getParity(this->puzzle);
+}
+
 void Node::setFxScore() {
     if (MANHATTAN_DISTANCE == heuristic)
     {
@@ -57,14 +111,6 @@ void Node::setFxScore() {
     else
     {
         throw std::invalid_argument("Heuristic not supported.");
-    }
-}
-
-void Node::setParentPuzzle(std::vector<int> puzzle) {
-    int puzzleSize = puzzle.size();
-    for (int i = 0; i < puzzleSize; i++)
-    {
-        this->puzzle.push_back(puzzle[i] - 1);
     }
 }
 
@@ -116,15 +162,15 @@ double Node::calculateEucledianDistance() {
 }
 
 
-int Node::getInversionCount() {
+int Node::getInversionCount(std::vector<int> &puzzle) {
     int inversionCount = 0;
     int puzzleSize = puzzle.size();
     for (int i = 0; i < puzzleSize; i++) {
-        if (puzzle[i] == -1) {
+        if (puzzle[i] == 0) {
             continue;
         }
         for (int j = i + 1; j < puzzleSize; j++) {
-            if (puzzle[j] != -1 && puzzle[i] > puzzle[j]) {
+            if (puzzle[j] != 0 && puzzle[i] > puzzle[j]) {
                 inversionCount++;
             }
         }
@@ -132,23 +178,29 @@ int Node::getInversionCount() {
     return inversionCount;
 }
 
-bool Node::isSolvable() {
-    int inversionCount = getInversionCount();
+int Node::getParity(std::vector<int> &puzzle) {
     std::size_t puzzleSize = puzzle.size();
+    int inversionCount = getInversionCount(puzzle);
     if (this->dim % 2 == 1) {
-        return inversionCount % 2 == 0;
+        return inversionCount & 1;
     } else {
-        int blankTileRow = 0;
-        int j = puzzleSize - 1;
         for (std::size_t i = 0; i < puzzleSize; i++) {
-            if (puzzle[j] == -1) {
-                blankTileRow = (i / this->dim) + 1;
+            if (puzzle[i] == 0) {
+                inversionCount += (puzzleSize - 1 - i) / this->dim;
                 break;
             }
-            j--;
         }
-        return (inversionCount + blankTileRow) % 2 == 1;
+        return inversionCount & 1;
     }
+}
+
+bool Node::isSolvable() {
+    std::cout << "Puzzle parity: " << puzzleParity << std::endl;
+    std::cout << "Goal parity: " << goalParity << std::endl;
+    if (puzzleParity == goalParity) {
+        return true;
+    }
+    return false;
 }
 
 bool Node::isValid() {
