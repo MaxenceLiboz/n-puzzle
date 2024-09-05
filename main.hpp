@@ -3,5 +3,6 @@
 
 #include <iostream>
 #include "Node.hpp"
+#include "NPuzzle.hpp"
 
 #endif

@@ -13,7 +13,9 @@ FLAGS				=	-Wall -Wextra -Werror
 RM					=	rm -rf
 
 SRCS =  main.cpp \
-		Node.cpp 
+		Node.cpp \
+		NPuzzle.cpp
+		
 NAME = ft_puzzle
 
 .PHONY: all
