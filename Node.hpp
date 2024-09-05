@@ -22,15 +22,23 @@ class Node
 {
 private:
     std::vector<int> puzzle;
-    double fxScore;
-    Node *parent;
     int dim;
-    Heuristic heuristic;
+    static std::vector<int> goal;
+    static int goalParity;
+    int puzzleParity;
+
+    double fxScore;
     int gxScore;
 
-    bool isLinearConflict(int i, int j);
-    void setParentPuzzle(std::vector<int> puzzle);
-    int getInversionCount();
+    Node *parent;
+    Heuristic heuristic;
+
+    int getInversionCount(std::vector<int> &puzzle);
+    int getParity(std::vector<int> &puzzle);
+
+    // Setters
+    void setFxScore();
+    void setGoalsAndParities();
 
 public:
     // Constructors and Destructors
@@ -45,8 +53,6 @@ public:
     int getDim();
     
 
-    // Setters
-    void setFxScore();
 
     // Heuristic functions
     double calculateManhattanDistance();
