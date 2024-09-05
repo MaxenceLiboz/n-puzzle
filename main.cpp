@@ -29,7 +29,7 @@ int main() {
             }
         }
 
-        current->setChildenIntoList(openList);
+        current->setChildrenIntoList(openList);
     }
 
     std::chrono::_V2::system_clock::time_point stop = std::chrono::high_resolution_clock::now();
