@@ -5,6 +5,21 @@ NPuzzle::NPuzzle(std::vector<int> puzzle, Heuristic heuristic) {
     openList.push(node);
 }
 
+NPuzzle::NPuzzle(unsigned int dim, Heuristic heuristic) {
+    std::vector<int> puzzle;
+    for (unsigned int i = 0; i < dim * dim; i++) {
+        puzzle.push_back(i);
+    }
+
+    std::random_device rd;
+    std::mt19937 g(rd());
+    std::shuffle(puzzle.begin(), puzzle.end(), g);
+
+    Node * node = new Node(puzzle, heuristic, NULL);
+    std::cout << *node << std::endl;
+    openList.push(node);
+}
+
 NPuzzle::~NPuzzle() {
     while (!openList.empty()) {
         Node *child = openList.top();
@@ -22,6 +37,8 @@ void NPuzzle::solve() {
 
     if (!openList.top()->isSolvable()) {
         throw std::invalid_argument("Puzzle is not solvable");
+    } else {
+        std::cout << "Puzzle is solvable, starting the algo ..." << std::endl;
     }
 
     this->totalNumberOfNodes = 1;

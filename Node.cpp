@@ -37,6 +37,10 @@ double Node::getGxScore() const {
     return gxScore;
 }
 
+double Node::getHxScore() const {
+    return hxScore;
+}
+
 Node *Node::getParent() {
     return parent;
 }
@@ -98,15 +102,18 @@ void Node::setGoalsAndParities() {
 void Node::setFxScore() {
     if (MANHATTAN_DISTANCE == heuristic)
     {
-        fxScore = calculateManhattanDistance() + gxScore;
+        hxScore = calculateManhattanDistance();
+        fxScore = hxScore + gxScore;
     }
     else if (MISPLACED_TILES == heuristic)
     {
-        fxScore = calculateMisplacedTiles() + gxScore;
+        hxScore = calculateMisplacedTiles();
+        fxScore = hxScore + gxScore;
     }
     else if (EUCLEDIAN_DISTANCE == heuristic)
     {
-        fxScore = calculateEucledianDistance() + gxScore;
+        hxScore = calculateEucledianDistance();
+        fxScore = hxScore + gxScore;
     }
     else
     {
@@ -275,6 +282,10 @@ std::ostream &operator<<(std::ostream &os, Node &Node) {
 }
 
 bool CmpNodePtr::operator()(const Node* lhs, const Node* rhs) const {
+    // if (lhs->getHxScore() < 12) {
+    //     return lhs->getFxScore() > rhs->getFxScore();
+    // }
+    // return lhs->getHxScore() > rhs->getHxScore();
     return lhs->getFxScore() > rhs->getFxScore();
 }
 

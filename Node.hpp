@@ -29,7 +29,8 @@ private:
     int puzzleParity;
 
     double fxScore;
-    int gxScore;
+    double gxScore;
+    double hxScore;
 
     Node *parent;
     Heuristic heuristic;
@@ -50,6 +51,7 @@ public:
     std::vector<int> getPuzzle() const;
     double getFxScore() const;
     double getGxScore() const;
+    double getHxScore() const;
     Node *getParent();
     int getDim();
     
