@@ -72,3 +72,4 @@ For each one of these heuristic the tiles cannot move that way so it will take m
 [A-star(A*) in general](https://algorithmsinsight.wordpress.com/graph-theory-2/a-star-in-general/)  
 [Implementing A-star(A*) to solve N-Puzzle](https://algorithmsinsight.wordpress.com/graph-theory-2/a-star-in-general/implementing-a-star-to-solve-n-puzzle/)  
 [How to check if an instance of 15 puzzle is solvable?](https://www.geeksforgeeks.org/check-instance-15-puzzle-solvable/)  
+[How to check solvability for any puzzle and goals](https://stackoverflow.com/questions/36108269/does-8-puzzle-solvability-rules-work-for-any-goal-state)  
