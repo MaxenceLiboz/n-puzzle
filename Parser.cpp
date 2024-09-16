@@ -1,48 +1,79 @@
 #include "Parser.hpp"
 
-Parser::Parser(int argsNumber, char **args) {
+Parser::Parser(int argsNumber, char **args, std::ifstream& inputFile) {
 
     if (argsNumber != 3) {
 
 		throw std::invalid_argument("Need two arguments (input file and heuristic name)");
 	}
 
-    int whichHeuristic = args[2] - '0';
+    int whichHeuristic;
+    sscanf(args[2], "%d", &whichHeuristic);
 
     switch (whichHeuristic) {
 
         case 0:
-            this->_heuristicName = MANHATTAN_DISTANCE;
+            this->_heuristic = MANHATTAN_DISTANCE;
             break;
         case 1:
-            this->_heuristicName = MISPLACED_TILES;
+            this->_heuristic = MISPLACED_TILES;
             break;
         case 2:
-            this->_heuristicName = LINEAR_CONFLICT_AND_MANHATTAN_DISTANCE;
+            this->_heuristic = LINEAR_CONFLICT_AND_MANHATTAN_DISTANCE;
             break;
         case 3:
-            this->_heuristicName = EUCLEDIAN_DISTANCE;
+            this->_heuristic = EUCLEDIAN_DISTANCE;
             break;
         default:
             throw std::invalid_argument("Wrong heuristic name, must be MANHATTAN_DISTANCE, MISPLACED_TILES, LINEAR_CONFLICT_AND_MANHATTAN_DISTANCE or EUCLEDIAN_DISTANCE");
     }
 
-    std::cout << this->_heuristicName << std::endl;
+    this->_setPuzzle(inputFile);
 }
 
 Parser::~Parser() {}
 
-// Parser::Parser(Parser const & src) {
+void Parser::_setPuzzle(std::ifstream& inputFile) {
 
-// 	if (&src != this) 
-// 		*this = src;
-// }
+    std::vector<int> puzzle;
+    std::string line;
+    int lineCount = 0;
 
-// Parser & operator=(Parser const & rhs) {
+    while (std::getline(inputFile, line))
+	{
+        if (lineCount > 0) {
 
-//     this->_heuristicName = rhs._heuristicName;
-	
-// 	return *this;
-// }
+            std::string::size_type posEndL = line.find('#');
+            if (posEndL == std::string::npos)
+                posEndL = line.size();
 
+            if (lineCount == 1)
+                this->_setDim(std::atoi(line.substr(0, posEndL).c_str()));
+            else if (lineCount > 1) {
 
+                std::string::size_type posBlank = 0;
+                std::string::size_type posBlankTmp = 0;
+                std::size_t vectorSizeTmp = puzzle.size();
+
+                while((posBlank = line.find(' ', posBlankTmp + 1)) != std::string::npos && posBlank < posEndL) {
+
+                    if (posBlankTmp != posBlank && line.at(posBlank - 1) != ' ')
+                        puzzle.push_back(std::atoi(line.substr(posBlankTmp, posBlank - posBlankTmp).c_str()));
+
+                    posBlankTmp = posBlank;
+                }
+
+                if (puzzle.size() == vectorSizeTmp + (this->_dim - 1))
+                    puzzle.push_back(std::atoi(line.substr(posBlankTmp, posBlank - posBlankTmp).c_str()));
+
+            }
+        }
+
+        lineCount++;
+    }
+}
+
+void Parser::_setDim(int dim) { this->_dim = dim; }
+
+std::vector<int>    Parser::getPuzzle() const { return this->_puzzle; }
+enum Heuristic      Parser::getHeuristic() const { return this->_heuristic; }

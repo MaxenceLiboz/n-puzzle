@@ -7,9 +7,9 @@ int main(int ac, char **av)
     inputFile.open(av[1]);
 	if (inputFile.fail()) {
 		
-		throw std::invalid_argument("Wrong number of argument");
+		throw std::invalid_argument("Invalid text file");
 	}
 
-    Parser parser = Parser(ac, av);
+    Parser parser = Parser(ac, av, inputFile);
     
 }

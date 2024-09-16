@@ -10,16 +10,20 @@ class Parser {
 
 private:
 
-    enum Heuristic  _heuristicName;
+    enum Heuristic      _heuristic;
+    std::vector<int>    _puzzle;
+    int                 _dim;
+
+    void    _setPuzzle(std::ifstream& inputFile);
+    void    _setDim(int dim);
 
 public:
     // Constructors and Destructors
-    Parser(int argsNumber, char **args);
+    Parser(int argsNumber, char **args, std::ifstream& inputFile);
     ~Parser();
-    // Parser(Parser const & src);
 
-    // Parser & operator=(Parser const & rhs);
-
+    std::vector<int>    getPuzzle() const;
+    enum Heuristic      getHeuristic() const;
 };
 
 #endif
