@@ -72,6 +72,7 @@ void Parser::_fillPuzzleVector(std::ifstream& inputFile) {
         lineCount++;
     }
 
+    this->_setPuzzle(puzzle);
     this->_checkPuzzleValidity(puzzle);
 }
 
@@ -87,8 +88,6 @@ void Parser::_checkPuzzleValidity(std::vector<int> puzzle) const {
 
         i++;
     }
-
-    this->_setPuzzle(puzzle);
 }
 
 void Parser::_setPuzzle(std::vector<int> puzzle) { this->_puzzle = puzzle; }
