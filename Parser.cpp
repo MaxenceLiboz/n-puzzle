@@ -28,12 +28,12 @@ Parser::Parser(int argsNumber, char **args, std::ifstream& inputFile) {
             throw std::invalid_argument("Wrong heuristic name, must be MANHATTAN_DISTANCE, MISPLACED_TILES, LINEAR_CONFLICT_AND_MANHATTAN_DISTANCE or EUCLEDIAN_DISTANCE");
     }
 
-    this->_setPuzzle(inputFile);
+    this->_fillPuzzleVector(inputFile);
 }
 
 Parser::~Parser() {}
 
-void Parser::_setPuzzle(std::ifstream& inputFile) {
+void Parser::_fillPuzzleVector(std::ifstream& inputFile) {
 
     std::vector<int> puzzle;
     std::string line;
@@ -71,8 +71,27 @@ void Parser::_setPuzzle(std::ifstream& inputFile) {
 
         lineCount++;
     }
+
+    this->_checkPuzzleValidity(puzzle);
 }
 
+void Parser::_checkPuzzleValidity(std::vector<int> puzzle) const {
+
+    std::sort(puzzle.begin(), puzzle.end());
+
+    int i = 0;
+    for (int puzzleCase : puzzle) {
+
+        if (i != puzzleCase)
+            throw std::invalid_argument("Numbers inside of the puzzle are not in the good range");
+
+        i++;
+    }
+
+    this->_setPuzzle(puzzle);
+}
+
+void Parser::_setPuzzle(std::vector<int> puzzle) { this->_puzzle = puzzle; }
 void Parser::_setDim(int dim) { this->_dim = dim; }
 
 std::vector<int>    Parser::getPuzzle() const { return this->_puzzle; }

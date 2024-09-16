@@ -5,6 +5,7 @@
 #include <string>
 #include <iostream>
 #include "Node.hpp"
+#include <algorithm>
 
 class Parser {
 
@@ -14,8 +15,11 @@ private:
     std::vector<int>    _puzzle;
     int                 _dim;
 
-    void    _setPuzzle(std::ifstream& inputFile);
+    void    _fillPuzzleVector(std::ifstream& inputFile);
     void    _setDim(int dim);
+    void    _setPuzzle(std::vector<int> puzzle);
+
+    void    _checkPuzzleValidity(std::vector<int> puzzle) const;
 
 public:
     // Constructors and Destructors
