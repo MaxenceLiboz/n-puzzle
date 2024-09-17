@@ -14,7 +14,8 @@ RM					=	rm -rf
 
 SRCS =  main.cpp \
 		Node.cpp \
-		Parser.cpp
+		Parser.cpp \
+		NPuzzle.cpp
 		
 NAME = ft_puzzle
 

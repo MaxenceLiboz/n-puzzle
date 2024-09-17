@@ -54,9 +54,17 @@ Now you must understand that the algroithm can be optimize with this.
 The **f score** is calculated doing f(x) = g(x) + h(x); where x is the current node, g(x) is the depth of the node and h(x) is the heuristic chose.  
 For this project we have to implement 3 Heuristics and the Manhatan distance must be one of them.  
 Therefore, we will have : 
-- The Mahatan distance
-- Linear Conflict + Manhattan Distance [check the mention part here](https://algorithmsinsight.wordpress.com/graph-theory-2/a-star-in-general/implementing-a-star-to-solve-n-puzzle/)  
+- The Manhatan distance
+- The Euclidian distance
 - Tiles out of place
+
+## Admissible heuristics
+An admissible heuristic must never overestimates the cost, which means that the number of move required by the heuristic to finish the puzzle must be less or equal than the minimum number of move to reach the goal.
+Examples :
+- Manhatan distance calculate the sum of how many move in rows and columns needs a tile to be at the right place.
+- Euclidian distance calculate the sum of the hypothenus between each point
+- Tiles out of place calculate the sum of the missplaced tile
+For each one of these heuristic the tiles cannot move that way so it will take more than the heuristic to actually finish the puzzle, therefore it is an admissible heuristic.
 
 ## Sources
 [A* Algorithm | A* Algorithm Example](https://www.gatevidyalay.com/tag/a-star-search-algorithm-example/)  
@@ -64,3 +72,4 @@ Therefore, we will have :
 [A-star(A*) in general](https://algorithmsinsight.wordpress.com/graph-theory-2/a-star-in-general/)  
 [Implementing A-star(A*) to solve N-Puzzle](https://algorithmsinsight.wordpress.com/graph-theory-2/a-star-in-general/implementing-a-star-to-solve-n-puzzle/)  
 [How to check if an instance of 15 puzzle is solvable?](https://www.geeksforgeeks.org/check-instance-15-puzzle-solvable/)  
+[How to check solvability for any puzzle and goals](https://stackoverflow.com/questions/36108269/does-8-puzzle-solvability-rules-work-for-any-goal-state)  

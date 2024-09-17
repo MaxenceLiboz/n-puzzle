@@ -6,7 +6,8 @@
 #include <stdexcept>
 #include <iostream>
 #include <queue>
-#include <unordered_set>
+#include <iterator>
+#include <algorithm>
 
 enum Heuristic
 {
@@ -22,15 +23,23 @@ class Node
 {
 private:
     std::vector<int> puzzle;
-    double fxScore;
-    Node *parent;
     int dim;
-    Heuristic heuristic;
+    static std::vector<int> goal;
+    static int goalParity;
+    int puzzleParity;
+
+    double fxScore;
     int gxScore;
 
-    bool isLinearConflict(int i, int j);
-    void setParentPuzzle(std::vector<int> puzzle);
-    int getInversionCount();
+    Node *parent;
+    Heuristic heuristic;
+
+    int getInversionCount(std::vector<int> &puzzle);
+    int getParity(std::vector<int> &puzzle);
+
+    // Setters
+    void setFxScore();
+    void setGoalsAndParities();
 
 public:
     // Constructors and Destructors
@@ -38,24 +47,21 @@ public:
     ~Node();
 
     // Getters
-    std::vector<int> getPuzzle();
+    std::vector<int> getPuzzle() const;
     double getFxScore() const;
     double getGxScore() const;
     Node *getParent();
     int getDim();
     
 
-    // Setters
-    void setFxScore();
 
     // Heuristic functions
     double calculateManhattanDistance();
     double calculateMisplacedTiles();
-    double calculateLinearConflictAndManhattanDistance();
     double calculateEucledianDistance();
 
     // Move functions
-    void setChildrenIntoList(std::priority_queue<Node *, std::vector<Node*>, CmpNodePtr> &openList);
+    int setChildrenIntoList(std::priority_queue<Node *, std::vector<Node*>, CmpNodePtr> &openList);
 
     // Utility functions
     bool isSolvable();
@@ -66,6 +72,11 @@ public:
 struct CmpNodePtr
 {
     bool operator()(const Node* lhs, const Node* rhs) const;
+};
+
+struct HashNode
+{
+    std::size_t operator()(const Node *node) const;
 };
 
 
