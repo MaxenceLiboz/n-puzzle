@@ -4,5 +4,6 @@
 #include <iostream>
 #include "Node.hpp"
 #include "NPuzzle.hpp"
+#include "RandomGenerator.hpp"
 
 #endif

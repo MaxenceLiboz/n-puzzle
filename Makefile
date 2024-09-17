@@ -14,7 +14,8 @@ RM					=	rm -rf
 
 SRCS =  main.cpp \
 		Node.cpp \
-		NPuzzle.cpp
+		NPuzzle.cpp \
+		RandomGenerator.cpp
 		
 NAME = ft_puzzle
 
