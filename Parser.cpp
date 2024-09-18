@@ -1,14 +1,25 @@
 #include "Parser.hpp"
 
-Parser::Parser(int argsNumber, char **args, std::ifstream& inputFile) {
+Parser::Parser(int argsNumber, char **args) : _argsNumber(argsNumber), _args(args) {}
 
-    if (argsNumber != 3) {
+Parser::~Parser() {}
 
-		throw std::invalid_argument("Need two arguments (input file and heuristic name)");
+void Parser::parsing() {
+
+    if (this->_argsNumber != 3) {
+
+		throw std::invalid_argument("Need two arguments (input file and heuristic number) 0 : MANHATTAN_DISTANCE, 1 : MISPLACED_TILES, 2 : LINEAR_CONFLICT_AND_MANHATTAN_DISTANCE or 4 : EUCLEDIAN_DISTANCE");
+	}
+
+    std::ifstream inputFile;
+    inputFile.open(this->_args[1]);
+	if (inputFile.fail()) {
+		
+		throw std::invalid_argument("Invalid text file");
 	}
 
     int whichHeuristic;
-    sscanf(args[2], "%d", &whichHeuristic);
+    sscanf(this->_args[2], "%d", &whichHeuristic);
 
     switch (whichHeuristic) {
 
@@ -25,13 +36,18 @@ Parser::Parser(int argsNumber, char **args, std::ifstream& inputFile) {
             this->_heuristic = EUCLEDIAN_DISTANCE;
             break;
         default:
-            throw std::invalid_argument("Wrong heuristic name, must be MANHATTAN_DISTANCE, MISPLACED_TILES, LINEAR_CONFLICT_AND_MANHATTAN_DISTANCE or EUCLEDIAN_DISTANCE");
+            throw std::invalid_argument("Wrong heuristic number, must be 0 : MANHATTAN_DISTANCE, 1 : MISPLACED_TILES, 2 : LINEAR_CONFLICT_AND_MANHATTAN_DISTANCE or 3 : EUCLEDIAN_DISTANCE");
     }
 
-    this->_fillPuzzleVector(inputFile);
-}
+    try {
 
-Parser::~Parser() {}
+        this->_fillPuzzleVector(inputFile);
+    }
+    catch (std::exception &e){
+
+        throw std::invalid_argument( e.what() );
+    }
+}
 
 void Parser::_fillPuzzleVector(std::ifstream& inputFile) {
 
