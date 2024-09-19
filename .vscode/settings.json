@@ -53,6 +53,8 @@
         "unordered_set": "cpp",
         "chrono": "cpp",
         "ctime": "cpp",
-        "ratio": "cpp"
-    }
+        "ratio": "cpp",
+        "fstream": "cpp"
+    },
+    "C_Cpp.errorSquiggles": "disabled"
 }

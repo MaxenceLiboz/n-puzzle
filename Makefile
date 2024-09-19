@@ -5,7 +5,7 @@
 # MATRIX_DIR		= matrix	
 
 
-INCLUDES	=	main.hpp
+INCLUDES	=	main.hpp 
 # 				${MATRIX_DIR}/Matrix.hpp								
 
 CC					=	c++
@@ -14,6 +14,7 @@ RM					=	rm -rf
 
 SRCS =  main.cpp \
 		Node.cpp \
+		Parser.cpp \
 		NPuzzle.cpp
 		
 NAME = ft_puzzle

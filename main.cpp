@@ -1,13 +1,26 @@
 #include "main.hpp"
 #include <unordered_set>
 
-int main() {
-    std::priority_queue<Node *, std::vector<Node*>, CmpNodePtr> openList;
-    std::unordered_set<std::vector<int>, HashNode> closedList;
+int main(int ac, char **av)
+{
 
-    std::vector<int> v = {0,2,3,1,6,7,4,8,5};
+    Parser parser = Parser(ac, av);
 
-    NPuzzle puzzle(v, MANHATTAN_DISTANCE);
+    try {
+
+        parser.parsing();
+
+    } catch (std::invalid_argument &e) {
+        std::cout << e.what() << std::endl;
+        return 1;
+    }
+
+	std::vector<int> vec = parser.getPuzzle();
+
+	for (int i : vec)
+		std::cout << i << ' ';
+
+    NPuzzle puzzle(parser.getPuzzle(), MANHATTAN_DISTANCE);
 
     try {
         puzzle.solve();
@@ -17,4 +30,3 @@ int main() {
         return 1;
     }
 }
-
