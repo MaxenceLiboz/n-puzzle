@@ -4,9 +4,6 @@
 int main(int ac, char **av)
 {
 
-    std::priority_queue<Node *, std::vector<Node*>, CmpNodePtr> openList;
-    std::unordered_set<std::vector<int>, HashNode> closedList;
-
     Parser parser = Parser(ac, av);
 
     try {
