@@ -16,9 +16,10 @@ private:
 
 public:
     // Constructors and Destructors
-    RandomGenerator(int dim);
+    RandomGenerator();
     ~RandomGenerator();
 
+    void                generateRandom(int dim);
     std::vector<int>    getPuzzle() const;
 };
 

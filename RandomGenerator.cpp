@@ -1,6 +1,13 @@
 #include "RandomGenerator.hpp"
 
-RandomGenerator::RandomGenerator(int dim) {
+RandomGenerator::RandomGenerator() {}
+
+RandomGenerator::~RandomGenerator() {}
+
+void RandomGenerator::generateRandom(int dim) {
+
+    if (dim < 2)
+        throw std::invalid_argument("Puzzle dimension must be superior to 1");
 
     std::vector<int>    puzzle;
 
@@ -33,8 +40,6 @@ RandomGenerator::RandomGenerator(int dim) {
     
     _setPuzzle(puzzle);
 }
-
-RandomGenerator::~RandomGenerator() {}
 
 void RandomGenerator::_setPuzzle(std::vector<int> puzzle) { this->_puzzle = puzzle; }
 
