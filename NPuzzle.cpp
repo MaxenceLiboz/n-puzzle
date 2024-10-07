@@ -6,16 +6,11 @@ NPuzzle::NPuzzle(std::vector<int> puzzle, Heuristic heuristic) {
 }
 
 NPuzzle::NPuzzle(unsigned int dim, Heuristic heuristic) {
-    std::vector<int> puzzle;
-    for (unsigned int i = 0; i < dim * dim; i++) {
-        puzzle.push_back(i);
-    }
 
-    std::random_device rd;
-    std::mt19937 g(rd());
-    std::shuffle(puzzle.begin(), puzzle.end(), g);
+    RandomGenerator gen;
+    gen.generateRandom(dim);
 
-    Node * node = new Node(puzzle, heuristic, NULL);
+    Node * node = new Node(gen.getPuzzle(), heuristic, NULL);
     std::cout << *node << std::endl;
     openList.push(node);
 }

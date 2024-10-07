@@ -6,8 +6,8 @@ RandomGenerator::~RandomGenerator() {}
 
 void RandomGenerator::generateRandom(int dim) {
 
-    if (dim < 2)
-        throw std::invalid_argument("Puzzle dimension must be superior to 1");
+    if (dim < 3)
+        throw std::invalid_argument("Puzzle dimension must be superior to 2");
 
     std::vector<int>    puzzle;
 

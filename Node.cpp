@@ -282,10 +282,7 @@ std::ostream &operator<<(std::ostream &os, Node &Node) {
 }
 
 bool CmpNodePtr::operator()(const Node* lhs, const Node* rhs) const {
-    // if (lhs->getHxScore() < 12) {
-    //     return lhs->getFxScore() > rhs->getFxScore();
-    // }
-    // return lhs->getHxScore() > rhs->getHxScore();
+
     return lhs->getFxScore() > rhs->getFxScore();
 }
 

@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <iterator>
 #include <random>
+#include "RandomGenerator.hpp"
 
 #include "Node.hpp"
 
