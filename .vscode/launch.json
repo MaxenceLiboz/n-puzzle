@@ -6,7 +6,10 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/ft_puzzle",
-            "args": [],
+            "args": [
+                "${workspaceFolder}/puzzles/ngen.txt",
+                "0"
+            ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "MIMode": "gdb",
