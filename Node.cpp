@@ -9,9 +9,24 @@ Node::Node(std::vector<int> puzzle, Heuristic heuristic, Node *parent) {
     }
     this->parent = parent;
     this->heuristic = heuristic;
-    this->dim = sqrt(puzzle.size());
-
     this->puzzle = puzzle;
+
+    // this->dim = sqrt(puzzle.size());
+
+    // if (parent == NULL) {
+    //     this->gxScore = 0;
+    // } else {
+    //     this->gxScore = parent->gxScore + 1;
+    // }
+
+    // setGoalsAndParities();
+
+    // setFxScore();
+}
+
+void Node::setNode() {
+    this->dim = sqrt(this->puzzle.size());
+
     if (parent == NULL) {
         this->gxScore = 0;
     } else {
@@ -222,7 +237,8 @@ bool Node::isValid() {
     return true;
 }
 
-int Node::setChildrenIntoList(std::priority_queue<Node *, std::vector<Node*>, CmpNodePtr> &openList) {
+int Node::setChildrenIntoList(std::priority_queue<Node *, std::vector<Node*>, CmpNodePtr> &openList, std::unordered_set<Node *, HashNode> &closedList){
+    
     int puzzleSize = puzzle.size();
     int blankTileIndex = 0;
     int children = 0;
@@ -233,31 +249,56 @@ int Node::setChildrenIntoList(std::priority_queue<Node *, std::vector<Node*>, Cm
         }
     }
 
+    Node *child = NULL;
     if (blankTileIndex % this->dim != 0) {
         std::vector<int> leftPuzzle = puzzle;
         std::swap(leftPuzzle[blankTileIndex], leftPuzzle[blankTileIndex - 1]);
-        openList.push(new Node(leftPuzzle, heuristic, this));
+        child = new Node(leftPuzzle, heuristic, this);
+        if (closedList.find(child) == closedList.end()) {
+            child->setNode();
+            openList.push(child);
+        } else {
+            delete child;
+        }
         children++;
     }
 
     if (blankTileIndex % this->dim != this->dim - 1) {
         std::vector<int> rightPuzzle = puzzle;
         std::swap(rightPuzzle[blankTileIndex], rightPuzzle[blankTileIndex + 1]);
-        openList.push(new Node(rightPuzzle, heuristic, this));
+        child = new Node(rightPuzzle, heuristic, this);
+        if (closedList.find(child) == closedList.end()) {
+            child->setNode();
+            openList.push(child);
+        } else {
+            delete child;
+        }
         children++;
     }
 
     if (blankTileIndex >= this->dim) {
         std::vector<int> upPuzzle = puzzle;
         std::swap(upPuzzle[blankTileIndex], upPuzzle[blankTileIndex - this->dim]);
-        openList.push(new Node(upPuzzle, heuristic, this));
+        child = new Node(upPuzzle, heuristic, this);
+        if (closedList.find(child) == closedList.end()) {
+            child->setNode();
+            openList.push(child);
+        } else {
+            delete child;
+        }
         children++;
     }
 
     if (blankTileIndex + this->dim < puzzleSize) {
         std::vector<int> downPuzzle = puzzle;
         std::swap(downPuzzle[blankTileIndex], downPuzzle[blankTileIndex + this->dim]);
-        openList.push(new Node(downPuzzle, heuristic, this));
+        child = new Node(downPuzzle, heuristic, this);
+        if (closedList.find(child) == closedList.end()) {
+            child->setNode();
+            openList.push(child);
+        } else {
+            delete child;
+        }
         children++;
     }
     
@@ -283,7 +324,11 @@ std::ostream &operator<<(std::ostream &os, Node &Node) {
 
 bool CmpNodePtr::operator()(const Node* lhs, const Node* rhs) const {
 
-    return lhs->getFxScore() > rhs->getFxScore();
+    if (lhs->getFxScore() == rhs->getFxScore()) {
+        return lhs->getHxScore() > rhs->getHxScore();
+    } else {
+        return lhs->getFxScore() > rhs->getFxScore();
+    }
 }
 
 size_t HashNode::operator()(const Node *node) const {

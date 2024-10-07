@@ -24,15 +24,17 @@ int main()
 
     try {
 
-        RandomGenerator gen;
-        gen.generateRandom(3);
+        // RandomGenerator gen;
+        // gen.generateRandom(3);
         
-        for (int i : gen.getPuzzle())
-            std::cout << i << " ";
+        // for (int i : gen.getPuzzle())
+        //     std::cout << i << " ";
 
-        std::cout << '\n';
+        // std::cout << '\n';
 
-        NPuzzle puzzle(gen.getPuzzle(), MANHATTAN_DISTANCE);
+        std::vector<int> v = {3, 1, 5, 8, 4, 0, 7, 2, 6};
+
+        NPuzzle puzzle(v, EUCLEDIAN_DISTANCE);
 
         puzzle.solve();
         return 0;

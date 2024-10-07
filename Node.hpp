@@ -8,6 +8,7 @@
 #include <queue>
 #include <iterator>
 #include <algorithm>
+#include <unordered_set>
 
 enum Heuristic
 {
@@ -18,6 +19,7 @@ enum Heuristic
 };
 
 struct CmpNodePtr;
+struct HashNode;
 
 class Node
 {
@@ -55,7 +57,7 @@ public:
     Node *getParent();
     int getDim();
     
-
+    void setNode();
 
     // Heuristic functions
     double calculateManhattanDistance();
@@ -63,7 +65,7 @@ public:
     double calculateEucledianDistance();
 
     // Move functions
-    int setChildrenIntoList(std::priority_queue<Node *, std::vector<Node*>, CmpNodePtr> &openList);
+    int setChildrenIntoList(std::priority_queue<Node *, std::vector<Node*>, CmpNodePtr> &openList, std::unordered_set<Node *, HashNode> &closedList);
 
     // Utility functions
     bool isSolvable();

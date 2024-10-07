@@ -2,6 +2,7 @@
 
 NPuzzle::NPuzzle(std::vector<int> puzzle, Heuristic heuristic) {
     Node * node = new Node(puzzle, heuristic, NULL);
+    node->setNode();
     openList.push(node);
 }
 
@@ -55,7 +56,7 @@ void NPuzzle::solve() {
             }
         }
 
-        this->totalNumberOfNodes += current->setChildrenIntoList(openList);
+        this->totalNumberOfNodes += current->setChildrenIntoList(openList, closedList);
     }
 
     this->end = std::chrono::high_resolution_clock::now();

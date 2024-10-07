@@ -9,7 +9,7 @@ INCLUDES	=	main.hpp
 # 				${MATRIX_DIR}/Matrix.hpp								
 
 CC					=	c++
-FLAGS				=	-Wall -Wextra -Werror
+FLAGS				=	-Wall -Wextra -Werror -O3
 RM					=	rm -rf
 
 SRCS =  main.cpp \
