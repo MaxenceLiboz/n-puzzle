@@ -5,5 +5,6 @@
 #include "Node.hpp"
 #include "Parser.hpp"
 #include "NPuzzle.hpp"
+#include "RandomGenerator.hpp"
 
 #endif

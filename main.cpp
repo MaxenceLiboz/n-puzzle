@@ -1,30 +1,42 @@
 #include "main.hpp"
 #include <unordered_set>
 
-int main(int ac, char **av)
+int main()
 {
 
-    Parser parser = Parser(ac, av);
+    // for this test use : int ac, char **av
+    // try {
+
+    //     Parser parser = Parser(ac, av);
+
+    //     std::vector<int> vec = parser.getPuzzle();
+
+    //     NPuzzle puzzle(vec, MANHATTAN_DISTANCE);
+    //     parser.parsing();
+
+    //     puzzle.solve();
+    //     return 0;
+
+    // } catch (std::invalid_argument &e) {
+    //     std::cout << e.what() << std::endl;
+    //     return 1;
+    // }
 
     try {
 
-        parser.parsing();
+        RandomGenerator gen;
+        gen.generateRandom(3);
+        
+        for (int i : gen.getPuzzle())
+            std::cout << i << " ";
 
-    } catch (std::invalid_argument &e) {
-        std::cout << e.what() << std::endl;
-        return 1;
-    }
+        std::cout << '\n';
 
-	std::vector<int> vec = parser.getPuzzle();
+        NPuzzle puzzle(gen.getPuzzle(), MANHATTAN_DISTANCE);
 
-	for (int i : vec)
-		std::cout << i << ' ';
-
-    NPuzzle puzzle(parser.getPuzzle(), MANHATTAN_DISTANCE);
-
-    try {
         puzzle.solve();
         return 0;
+
     } catch (std::invalid_argument &e) {
         std::cout << e.what() << std::endl;
         return 1;

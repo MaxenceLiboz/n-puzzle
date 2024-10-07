@@ -6,6 +6,10 @@
 #include <unordered_set>
 #include <chrono>
 #include <stdexcept>
+#include <algorithm>
+#include <iterator>
+#include <random>
+#include "RandomGenerator.hpp"
 
 #include "Node.hpp"
 
@@ -24,6 +28,7 @@ private:
 
 public:
     NPuzzle(std::vector<int> puzzle, Heuristic heuristic);
+    NPuzzle(unsigned int dim, Heuristic heuristic);
     ~NPuzzle();
 
     void solve();
