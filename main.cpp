@@ -34,6 +34,18 @@ int main()
 
         NPuzzle puzzle(gen.getPuzzle(), MANHATTAN_DISTANCE);
 
+        // std::vector<int> v = {7, 8, 2, 6, 4, 5, 1, 3, 0};
+        // std::vector<int> v = {0, 2, 4, 8, 1, 3, 7, 6, 5};
+        // 1, 2, 3, 8, 0, 4, 7, 6, 5
+        // std::vector<int> v;
+        // int num;
+        // while (std::cin >> num) {
+        //     std::cout << num << ", ";
+        //     v.push_back(num);
+        // }
+        // std::cout << std::endl;
+        // NPuzzle puzzle(v, MANHATTAN_DISTANCE);
+
         puzzle.solve();
         return 0;
 

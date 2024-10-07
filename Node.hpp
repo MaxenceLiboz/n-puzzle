@@ -40,11 +40,14 @@ private:
 
     // Setters
     void setFxScore();
-    void setGoalsAndParities();
+    void setGoal();
+    void setGoalParity();
+    void setPuzzleParity();
 
 public:
     // Constructors and Destructors
     Node(std::vector<int> puzzle, Heuristic heuristic, Node *parent);
+    Node(int dim);
     ~Node();
 
     // Getters
@@ -54,15 +57,20 @@ public:
     double getHxScore() const;
     Node *getParent();
     int getDim();
-    
-
 
     // Heuristic functions
     double calculateManhattanDistance();
     double calculateMisplacedTiles();
     double calculateEucledianDistance();
 
+    // Setter
+    void setPuzzle(std::vector<int> puzzle);
+    
     // Move functions
+    std::vector<int> moveUp(int blankTileIndex);
+    std::vector<int> moveDown(int blankTileIndex);
+    std::vector<int> moveLeft(int blankTileIndex);
+    std::vector<int> moveRight(int blankTileIndex);
     int setChildrenIntoList(std::priority_queue<Node *, std::vector<Node*>, CmpNodePtr> &openList);
 
     // Utility functions

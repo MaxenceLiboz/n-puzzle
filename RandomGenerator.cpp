@@ -6,39 +6,41 @@ RandomGenerator::~RandomGenerator() {}
 
 void RandomGenerator::generateRandom(int dim) {
 
-    if (dim < 3)
-        throw std::invalid_argument("Puzzle dimension must be superior to 2");
-
-    std::vector<int>    puzzle;
-
+    Node node(dim);
     srand((unsigned) time(NULL));
-    int puzzleSize = pow(dim, 2);
+    int blankTileIndex;
+    int puzzleSize = node.getPuzzle().size();
 
-    for (int i = 0; i < puzzleSize; i++) {
+    for (int i = 0; i < 30; i++) {
+        int random = rand() % 4;
+        for (int i = 0; i < puzzleSize; i++) {
+            if (node.getPuzzle()[i] == 0) {
+                blankTileIndex = i;
+                break;
+            }
+        }
 
-        int randomAdd = rand() % (puzzleSize - 1);
 
-        if (puzzle.size() > 0) {
-
-                for (std::vector<int>::iterator iter = puzzle.begin(); iter != puzzle.end(); ++iter) {
-
-                    if (randomAdd == *iter) {
-
-                        if (randomAdd == puzzleSize - 1)
-                            randomAdd = 0;
-                        else
-                            randomAdd++;
-                        
-                        // At the next iteration, iter will be equal to puzzle.begin()
-                        iter = puzzle.begin() - 1;
-                    }
-                }
+        switch (random)
+        {
+            case 0:
+                node.setPuzzle(node.moveUp(blankTileIndex));
+                break;
+            case 1:
+                node.setPuzzle(node.moveDown(blankTileIndex));
+                break;  
+            case 2:
+                node.setPuzzle(node.moveLeft(blankTileIndex));
+                break;  
+            case 3:
+                node.setPuzzle(node.moveRight(blankTileIndex));
+                break;       
         }
         
-        puzzle.push_back(randomAdd);   
     }
+
     
-    _setPuzzle(puzzle);
+    _setPuzzle(node.getPuzzle());
 }
 
 void RandomGenerator::_setPuzzle(std::vector<int> puzzle) { this->_puzzle = puzzle; }

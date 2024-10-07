@@ -3,9 +3,19 @@
 std::vector<int> Node::goal;
 int Node::goalParity;
 
+Node::Node(int dim) {
+    if (dim < 3) {
+        throw std::invalid_argument("Puzzle size must be a perfect square and at least 3 by 3.");
+    }
+    this->dim = dim;
+
+    setGoal();
+    this->puzzle = this->goal;
+}
+
 Node::Node(std::vector<int> puzzle, Heuristic heuristic, Node *parent) {
-    if (sqrt(puzzle.size()) != (int)sqrt(puzzle.size())) {
-        throw std::invalid_argument("Puzzle size must be a perfect square.");
+    if (puzzle.size() > 2 && sqrt(puzzle.size()) != (int)sqrt(puzzle.size())) {
+        throw std::invalid_argument("Puzzle size must be a perfect square and at least 3 by 3.");
     }
     this->parent = parent;
     this->heuristic = heuristic;
@@ -18,7 +28,9 @@ Node::Node(std::vector<int> puzzle, Heuristic heuristic, Node *parent) {
         this->gxScore = parent->gxScore + 1;
     }
 
-    setGoalsAndParities();
+    setGoal();
+    setGoalParity();
+    setPuzzleParity();
 
     setFxScore();
 }
@@ -49,7 +61,7 @@ int Node::getDim() {
     return dim;
 }
 
-void Node::setGoalsAndParities() {
+void Node::setGoal() {
     if (goal.size() == 0) {
         std::vector<int> goalState(this->dim * this->dim, 0);
         int number = 1;
@@ -94,9 +106,21 @@ void Node::setGoalsAndParities() {
             goalState[finishIndex] = 0;
         }
         this->goal = goalState;
-        this->goalParity = getParity(this->goal);
     }
+}
+
+void Node::setGoalParity() {
+    this->goalParity = getParity(this->goal);
+}
+
+void Node::setPuzzleParity() {
     this->puzzleParity = getParity(this->puzzle);
+}
+
+void Node::setPuzzle(std::vector<int> puzzle) {
+    if (puzzle.size() == this->puzzle.size()) {
+        this->puzzle = puzzle;
+    }
 }
 
 void Node::setFxScore() {
@@ -222,6 +246,42 @@ bool Node::isValid() {
     return true;
 }
 
+std::vector<int> Node::moveUp(int blankTileIndex) {
+    std::vector<int> upPuzzle;
+    if (blankTileIndex >= this->dim) {
+        upPuzzle = puzzle;
+        std::swap(upPuzzle[blankTileIndex], upPuzzle[blankTileIndex - this->dim]);
+    }
+    return upPuzzle;
+}
+
+std::vector<int> Node::moveDown(int blankTileIndex) {
+    std::vector<int> downPuzzle;
+    if (blankTileIndex + this->dim < (int)this->puzzle.size()) {
+        downPuzzle = puzzle;
+        std::swap(downPuzzle[blankTileIndex], downPuzzle[blankTileIndex + this->dim]);
+    }
+    return downPuzzle;
+}
+
+std::vector<int> Node::moveLeft(int blankTileIndex) {
+    std::vector<int> leftPuzzle;
+    if (blankTileIndex % this->dim != 0) {
+        leftPuzzle = puzzle;
+        std::swap(leftPuzzle[blankTileIndex], leftPuzzle[blankTileIndex - 1]);
+    }
+    return leftPuzzle;
+}
+
+std::vector<int> Node::moveRight(int blankTileIndex) {
+    std::vector<int> rightPuzzle;
+    if (blankTileIndex % this->dim != this->dim - 1) {
+        rightPuzzle = puzzle;
+        std::swap(rightPuzzle[blankTileIndex], rightPuzzle[blankTileIndex + 1]);
+    }
+    return rightPuzzle;
+}
+
 int Node::setChildrenIntoList(std::priority_queue<Node *, std::vector<Node*>, CmpNodePtr> &openList) {
     int puzzleSize = puzzle.size();
     int blankTileIndex = 0;
@@ -233,31 +293,27 @@ int Node::setChildrenIntoList(std::priority_queue<Node *, std::vector<Node*>, Cm
         }
     }
 
-    if (blankTileIndex % this->dim != 0) {
-        std::vector<int> leftPuzzle = puzzle;
-        std::swap(leftPuzzle[blankTileIndex], leftPuzzle[blankTileIndex - 1]);
-        openList.push(new Node(leftPuzzle, heuristic, this));
-        children++;
-    }
-
-    if (blankTileIndex % this->dim != this->dim - 1) {
-        std::vector<int> rightPuzzle = puzzle;
-        std::swap(rightPuzzle[blankTileIndex], rightPuzzle[blankTileIndex + 1]);
-        openList.push(new Node(rightPuzzle, heuristic, this));
-        children++;
-    }
-
-    if (blankTileIndex >= this->dim) {
-        std::vector<int> upPuzzle = puzzle;
-        std::swap(upPuzzle[blankTileIndex], upPuzzle[blankTileIndex - this->dim]);
+    std::vector<int> upPuzzle = this->moveUp(blankTileIndex);
+    if (upPuzzle.size() > 0) {
         openList.push(new Node(upPuzzle, heuristic, this));
         children++;
     }
 
-    if (blankTileIndex + this->dim < puzzleSize) {
-        std::vector<int> downPuzzle = puzzle;
-        std::swap(downPuzzle[blankTileIndex], downPuzzle[blankTileIndex + this->dim]);
+    std::vector<int> downPuzzle = this->moveDown(blankTileIndex);
+    if (downPuzzle.size() > 0) {
         openList.push(new Node(downPuzzle, heuristic, this));
+        children++;
+    }
+
+    std::vector<int> leftPuzzle = this->moveLeft(blankTileIndex);
+    if (leftPuzzle.size() > 0) {
+        openList.push(new Node(leftPuzzle, heuristic, this));
+        children++;
+    }
+
+    std::vector<int> rightPuzzle = this->moveRight(blankTileIndex);
+    if (rightPuzzle.size() > 0) {
+        openList.push(new Node(rightPuzzle, heuristic, this));
         children++;
     }
     
