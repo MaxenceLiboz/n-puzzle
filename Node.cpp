@@ -282,14 +282,18 @@ std::ostream &operator<<(std::ostream &os, Node &Node) {
 }
 
 bool CmpNodePtr::operator()(const Node* lhs, const Node* rhs) const {
-
-    return lhs->getFxScore() > rhs->getFxScore();
+    if (lhs->getFxScore() == rhs->getFxScore()) {
+        return lhs->getHxScore() > rhs->getHxScore();
+    } else {
+        return lhs->getFxScore() > rhs->getFxScore();
+    }
 }
 
 size_t HashNode::operator()(const Node *node) const {
     size_t hash = 0;
+    std::size_t prime = 7;
     for (size_t i = 0; i < node->getPuzzle().size(); i++) {
-        hash ^= std::hash<int>{}(node->getPuzzle()[i]);
+        hash = hash * prime + std::hash<int>{}(node->getPuzzle()[i]);
     }
     return hash;
 }
