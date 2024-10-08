@@ -22,7 +22,7 @@ Node::Node(std::vector<int> puzzle, Heuristic heuristic, Node *parent) {
 
     this->puzzle = puzzle;
     isPuzzleValid(puzzle);
-    
+
     if (parent == NULL) {
         this->gxScore = 0;
     } else {
@@ -126,6 +126,7 @@ void Node::setPuzzleParity() {
 bool Node::setPuzzle(std::vector<int> puzzle) {
     if (puzzle.size() == this->puzzle.size()) {
         this->puzzle = puzzle;
+        setBlankTileIndex();
         return true;
     }
     return false;

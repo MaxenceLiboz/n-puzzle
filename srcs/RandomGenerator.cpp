@@ -9,7 +9,7 @@ void RandomGenerator::generateRandom(int dim) {
     Node node(dim);
     std::mt19937 rng(std::chrono::high_resolution_clock::now().time_since_epoch().count());
     std::uniform_int_distribution<int> distMove(0, 3);
-    std::uniform_int_distribution<int> distRange(5, 10);
+    std::uniform_int_distribution<int> distRange(40, 50);
 
     int range = distRange(rng);
 
@@ -44,7 +44,8 @@ void RandomGenerator::generateRandom(int dim) {
         
     }
 
-     for (int i : node.getPuzzle()) {
+    std::cout << "Shuffle with " << range << " moves" << std::endl;
+    for (int i : node.getPuzzle()) {
         std::cout << i << " ";
      }
 
