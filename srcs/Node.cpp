@@ -256,16 +256,11 @@ bool Node::isSolvable() {
 }
 
 bool Node::isValid() {
-    int puzzleSize = puzzle.size();
-    for (int i = 0; i < puzzleSize; i++) {
-        if (puzzle[i] == 0) {
-            continue;
-        }
-        if (puzzle[i] != goal[i]) {
-            return false;
-        }
+    if (this->getHxScore() == 0) {
+        std::cout << this->getHxScore() << std::endl;
+        return true;
     }
-    return true;
+    return false;
 }
 
 void Node::isPuzzleValid(std::vector<int> &puzzle) {
