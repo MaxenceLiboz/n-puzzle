@@ -29,9 +29,6 @@ void Parser::parsing() {
         case 1:
             this->_heuristic = MISPLACED_TILES;
             break;
-        case 2:
-            this->_heuristic = LINEAR_CONFLICT_AND_MANHATTAN_DISTANCE;
-            break;
         case 3:
             this->_heuristic = EUCLEDIAN_DISTANCE;
             break;

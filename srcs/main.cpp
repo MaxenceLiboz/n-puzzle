@@ -23,15 +23,17 @@ int main()
     // }
 
     try {
-        // NPuzzle puzzle(4, EUCLEDIAN_DISTANCE);
+        NPuzzle puzzle(3, EUCLEDIAN_DISTANCE);
 
-        // std::vector<int> v = {7, 8, 2, 6, 4, 5, 1, 3, 0};
-        std::vector<int> v = {0, 2, 4, 8, 1, 3, 7, 6, 5};
-        // std::vector<int> v = {1, 6, 3, 4, 8, 0, 7, 2, 5};
-        // std::vector<int> v = {3, 7, 2, 6, 1, 5, 8, 4, 0};
-        NPuzzle puzzle(v, EUCLEDIAN_DISTANCE);
+        std::vector<int> v = {2, 3, 0, 1, 6, 4, 8, 7, 5};
+        NPuzzle puzzle1(v, MANHATTAN_DISTANCE);
+        NPuzzle puzzle2(v, EUCLEDIAN_DISTANCE);
+        NPuzzle puzzle3(v, MISPLACED_TILES);
 
         puzzle.solve();
+        puzzle1.solve();
+        puzzle2.solve();
+        puzzle3.solve();
         return 0;
 
     } catch (std::invalid_argument &e) {
