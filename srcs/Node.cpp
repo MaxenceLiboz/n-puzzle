@@ -147,6 +147,10 @@ void Node::setFxScore() {
     {
         hxScore = calculateEucledianDistance();
         fxScore = hxScore + gxScore;
+    } else  if (LINEAR_CONFLICT_AND_MANHATTAN_DISTANCE) {
+        hxScore = calculateManhattanDistance();
+        hxScore += calculateMisplacedTiles();
+        fxScore = hxScore + gxScore;
     }
     else
     {

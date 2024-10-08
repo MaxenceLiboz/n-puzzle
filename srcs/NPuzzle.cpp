@@ -53,7 +53,6 @@ void NPuzzle::solve() {
                 delete current;
             }
         }
-
         this->totalNumberOfNodes += current->setChildrenIntoList(openList);
     }
 

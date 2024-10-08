@@ -9,7 +9,7 @@ void RandomGenerator::generateRandom(int dim) {
     Node node(dim);
     std::mt19937 rng(std::chrono::high_resolution_clock::now().time_since_epoch().count());
     std::uniform_int_distribution<int> distMove(0, 3);
-    std::uniform_int_distribution<int> distRange(40, 50);
+    std::uniform_int_distribution<int> distRange(20, 40);
 
     int range = distRange(rng);
 
