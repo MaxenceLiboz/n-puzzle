@@ -32,6 +32,8 @@ private:
     double gxScore;
     double hxScore;
 
+    int blankTileIndex;
+
     Node *parent;
     Heuristic heuristic;
 
@@ -43,6 +45,10 @@ private:
     void setGoal();
     void setGoalParity();
     void setPuzzleParity();
+    void setBlankTileIndex();
+
+    // Validator throw error if not
+    void isPuzzleValid(std::vector<int> &puzzle);
 
 public:
     // Constructors and Destructors
@@ -57,6 +63,7 @@ public:
     double getHxScore() const;
     Node *getParent();
     int getDim();
+    int getBlankTileIndex() const;
 
     // Heuristic functions
     double calculateManhattanDistance();
@@ -64,13 +71,13 @@ public:
     double calculateEucledianDistance();
 
     // Setter
-    void setPuzzle(std::vector<int> puzzle);
+    bool setPuzzle(std::vector<int> puzzle);
     
     // Move functions
-    std::vector<int> moveUp(int blankTileIndex);
-    std::vector<int> moveDown(int blankTileIndex);
-    std::vector<int> moveLeft(int blankTileIndex);
-    std::vector<int> moveRight(int blankTileIndex);
+    std::vector<int> moveUp();
+    std::vector<int> moveDown();
+    std::vector<int> moveLeft();
+    std::vector<int> moveRight();
     int setChildrenIntoList(std::priority_queue<Node *, std::vector<Node*>, CmpNodePtr> &openList);
 
     // Utility functions

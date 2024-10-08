@@ -23,19 +23,12 @@ int main()
     // }
 
     try {
-
-        RandomGenerator gen;
-        gen.generateRandom(3);
-        
-        for (int i : gen.getPuzzle())
-            std::cout << i << " ";
-
-        std::cout << '\n';
-
-        NPuzzle puzzle(gen.getPuzzle(), MANHATTAN_DISTANCE);
+        NPuzzle puzzle(3, MANHATTAN_DISTANCE);
 
         // std::vector<int> v = {7, 8, 2, 6, 4, 5, 1, 3, 0};
         // std::vector<int> v = {0, 2, 4, 8, 1, 3, 7, 6, 5};
+        // std::vector<int> v = {1, 6, 3, 4, 8, 0, 7, 2, 5};
+
         // 1, 2, 3, 8, 0, 4, 7, 6, 5
         // std::vector<int> v;
         // int num;
