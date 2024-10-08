@@ -5,13 +5,13 @@
             "name": "Own debugger build",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/ft_puzzle",
+            "program": "${workspaceFolder}/n_puzzle",
             "args": [
-                "${workspaceFolder}/puzzles/ngen.txt",
-                "0"
+                // "${workspaceFolder}/puzzles/ngen.txt",
+                // "0"
             ],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}/srcs",
             "MIMode": "gdb",
             "preLaunchTask": "build",
             "miDebuggerPath": "/usr/bin/gdb",

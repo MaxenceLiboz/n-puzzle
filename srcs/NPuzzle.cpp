@@ -11,7 +11,6 @@ NPuzzle::NPuzzle(unsigned int dim, Heuristic heuristic) {
     gen.generateRandom(dim);
 
     Node * node = new Node(gen.getPuzzle(), heuristic, NULL);
-    std::cout << *node << std::endl;
     openList.push(node);
 }
 
@@ -43,7 +42,7 @@ void NPuzzle::solve() {
         if (closedList.size() + openList.size() > this->totalNumberOfNodesInMemory) {
             this->totalNumberOfNodesInMemory = closedList.size() + openList.size();
         }
-        Node *current;
+        Node *current = NULL;
         while (!openList.empty()) {
             current = openList.top();
             openList.pop();
@@ -54,7 +53,6 @@ void NPuzzle::solve() {
                 delete current;
             }
         }
-
         this->totalNumberOfNodes += current->setChildrenIntoList(openList);
     }
 

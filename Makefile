@@ -1,39 +1,77 @@
-# HEADPATH	=	-I vector	\
-# 				-I matrix
+################################################################################
+##                               Code color                                   ##
+################################################################################
 
-# VECTOR_DIR		= vector
-# MATRIX_DIR		= matrix	
+COLOR_NORM		=	\033[0m
+COLOR_RED			=	\033[31m
+COLOR_BLUE	=	\033[36m
 
-
-INCLUDES	=	main.hpp 
-# 				${MATRIX_DIR}/Matrix.hpp								
-
-CC					=	c++
-FLAGS				=	-Wall -Wextra -Werror -O3
-RM					=	rm -rf
-
-SRCS =  main.cpp \
+################################################################################
+##                               SRCS                                         ##
+################################################################################
+CACHE = .cache
+SRCS_DIR = srcs
+SRCS = 	main.cpp \
 		Node.cpp \
 		NPuzzle.cpp \
-		RandomGenerator.cpp \
-		Parser.cpp
-		
-NAME = ft_puzzle
+		Parser.cpp \
+		RandomGenerator.cpp
 
-.PHONY: all
+
+OBJS_DIR = build
+OBJS = $(addprefix $(OBJS_DIR)/,$(subst $(SRCS_DIR),,$(SRCS:.cpp=.o)))
+
+NAME = n_puzzle
+CC = c++
+CFLAGS = -Wall -Wextra -Werror -MMD -MP -Iincludes -O3 #-g3 #-fsanitize=address
+RM = rm -rf
+
+# Set the number of object files 
+NUM_OBJS = $(words $(OBJS))
+
+################################################################################
+##                       Compilation Environnement                            ##
+################################################################################
+
+# Define a function to print the progress bar 
+define print_progress
+	$(eval i = $(shell expr $(i) + 1))
+	$(eval PERCENT = $(shell expr $(i) '*' 100 '/' $(NUM_OBJS)))
+	@if [ $(i) -eq 1 ]; then \
+        printf "$(COLOR_BLUE)Starting compilation...\n$(COLOR_NORM)"; \
+  fi
+	@printf "\r\033[K\t$(COLOR_BLUE)[$(PERCENT)%%]\t--> $(COLOR_NORM)$<\$(COLOR_NORM)"
+	@printf "\r\033[K\t$(COLOR_BLUE)[$(PERCENT)%%]\t--> $(COLOR_NORM)$<\$(COLOR_NORM)"
+endef
+
+# Compilation rule for object files
+$(OBJS_DIR)/%.o : $(SRCS_DIR)/%.cpp
+	@mkdir -p $(dir $@)
+	$(call print_progress)
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+# Include the dependency files
+-include $(OBJ:.o=.d)
+
+# Default target
 all: $(NAME)
 
-.PHONY: debug
-debug:
-	$(CC) $(FLAGS) -g $(SRCS) -o $(NAME)
+# Link the final executable
+$(NAME): $(OBJS)
+	@printf "\n[✅]\tCompilation of $(COLOR_PURPLE)$(NAME)\$(COLOR_NORM)\n"
+	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS)
 
-.PHONY: $(NAME)
-$(NAME):
-	$(CC) $(FLAGS) $(SRCS) -o $(NAME)
-	
-.PHONY: clean
+# Clean up object files and dependency files
 clean:
-	${RM} $(NAME)
+	@$(RM) $(OBJS_DIR)
+	@$(RM) $(DEPS_DIR)
+	@$(RM) $(CACHE)
 
-.PHONY: re
-re:	clean all
+# Clean up object files, dependency files, and the executable
+fclean: clean
+	@$(RM) $(NAME)
+
+# Rebuild everything
+re: fclean all
+
+.PHONY: all clean fclean re

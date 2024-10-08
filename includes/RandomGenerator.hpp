@@ -6,6 +6,12 @@
 #include <time.h>
 #include <tgmath.h>
 #include <iostream>
+#include <functional>
+#include "Node.hpp"
+#include <random>
+#include <chrono>
+
+class Node;
 
 class RandomGenerator
 {
