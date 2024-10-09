@@ -2,7 +2,6 @@
 
 AStar::AStar(std::vector<int> puzzle, Heuristic heuristic) {
     Node * node = new Node(puzzle, heuristic, NULL);
-    node->setNode();
     openList.push(node);
 }
 
@@ -12,7 +11,6 @@ AStar::AStar(unsigned int dim, Heuristic heuristic) {
     gen.generateRandom(dim);
 
     Node * node = new Node(gen.getPuzzle(), heuristic, NULL);
-    std::cout << *node << std::endl;
     openList.push(node);
 }
 
@@ -44,7 +42,7 @@ void AStar::solve() {
         if (closedList.size() + openList.size() > this->totalNumberOfNodesInMemory) {
             this->totalNumberOfNodesInMemory = closedList.size() + openList.size();
         }
-        Node *current;
+        Node *current = NULL;
         while (!openList.empty()) {
             current = openList.top();
             openList.pop();
@@ -55,8 +53,7 @@ void AStar::solve() {
                 delete current;
             }
         }
-
-        this->totalNumberOfNodes += current->setChildrenIntoList(openList, closedList);
+        this->totalNumberOfNodes += current->setChildrenIntoList(openList);
     }
 
     this->end = std::chrono::high_resolution_clock::now();

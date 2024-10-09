@@ -23,12 +23,12 @@ int main()
     // }
 
     try {
-        NPuzzle puzzle(3, EUCLEDIAN_DISTANCE);
+        AStar puzzle(3, EUCLEDIAN_DISTANCE);
 
         std::vector<int> v = {2, 3, 0, 1, 6, 4, 8, 7, 5};
-        NPuzzle puzzle1(v, MANHATTAN_DISTANCE);
-        NPuzzle puzzle2(v, EUCLEDIAN_DISTANCE);
-        NPuzzle puzzle3(v, MISPLACED_TILES);
+        AStar puzzle1(v, MANHATTAN_DISTANCE);
+        AStar puzzle2(v, EUCLEDIAN_DISTANCE);
+        AStar puzzle3(v, MISPLACED_TILES);
 
         puzzle.solve();
         puzzle1.solve();

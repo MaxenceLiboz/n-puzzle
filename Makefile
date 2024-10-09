@@ -13,7 +13,6 @@ CACHE = .cache
 SRCS_DIR = srcs
 SRCS = 	main.cpp \
 		Node.cpp \
-		NPuzzle.cpp \
 		Parser.cpp \
 		RandomGenerator.cpp \
 		AStar.cpp
