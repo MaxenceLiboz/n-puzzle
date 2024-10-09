@@ -28,6 +28,8 @@ private:
     void printResult();
     std::tuple<std::vector<Node *>, int> depthLimitedSearch(int startCost, std::vector<Node *> pathSoFar, int costLimit);
 
+    void freeChildrens(std::vector<Node *> childrens, Node * current);
+
 public:
     IDA(std::vector<int> puzzle, Heuristic heuristic);
     IDA(unsigned int dim, Heuristic heuristic);

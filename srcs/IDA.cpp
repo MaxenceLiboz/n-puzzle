@@ -44,8 +44,7 @@ void IDA::solve() {
 
         std::tie(solution, costLimit) = depthLimitedSearch(0, nodeList, costLimit);
 
-        if (solution.back() && solution.back()->isValid()) {
-
+        if (solution.size() > 0 && solution.back()->isValid()) {
             run = false;
         }
         if (costLimit == INT32_MAX) {
@@ -62,22 +61,21 @@ void IDA::solve() {
 
 std::tuple<std::vector<Node *>, int> IDA::depthLimitedSearch(int startCost, std::vector<Node *> pathSoFar, int costLimit) {
 
-    Node *current = nodeList.back();
+    Node *current = pathSoFar.back();
 
     int currentCost =  current->getFxScore();
     std::vector<Node*> returnVec;
 
     if (currentCost > costLimit) {
-
         return std::make_tuple(returnVec, currentCost);
     }
-    if (pathSoFar.back()->isValid()) {
-
+    if (pathSoFar.size() > 0 && pathSoFar.back()->isValid()) {
         return std::make_tuple(pathSoFar, costLimit);
     }
 
     int nextCostLimit = INT32_MAX;
-    for (Node * s : nodeList.back()->getChildrens()) {
+    std::vector<Node *> childrens =  current->getChildrens();
+    for (Node * s : childrens) {
 
         int newStartCost = startCost + s->getHxScore();
         pathSoFar.push_back(s);
@@ -85,22 +83,31 @@ std::tuple<std::vector<Node *>, int> IDA::depthLimitedSearch(int startCost, std:
         int newCostLimit;
         std::tie(pathSoFar, newCostLimit) = depthLimitedSearch(newStartCost, pathSoFar, costLimit);
 
-        if (pathSoFar.back()->isValid()) {
-
+        if (pathSoFar.size() > 0 && pathSoFar.back()->isValid()) {
+            this->freeChildrens(childrens, s);
             return std::make_tuple(pathSoFar, newCostLimit);
         }
-
         nextCostLimit = std::min(nextCostLimit, newCostLimit);
     }
-    
+    this->freeChildrens(childrens, NULL);
     return std::make_tuple(returnVec, nextCostLimit);
+}
+
+void IDA::freeChildrens(std::vector<Node *> childrens, Node * current) {
+    for (Node * child : childrens) {
+        if ( child != current) {
+            delete child;
+        }
+    }
 }
 
 void IDA::printResult() {
     double depth = this->endNode->getGxScore();
     while (this->endNode != NULL) {
+        Node * current = this->endNode;
         std::cout << *this->endNode << std::endl;
         this->endNode = this->endNode->getParent();
+        delete current;
     }
     std::cout << "Time complexity: " << this->totalNumberOfNodes << std::endl;
     std::cout << "Space complexity: " << this->totalNumberOfNodesInMemory << std::endl;
