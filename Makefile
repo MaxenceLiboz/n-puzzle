@@ -15,7 +15,10 @@ SRCS = 	main.cpp \
 		Node.cpp \
 		NPuzzle.cpp \
 		Parser.cpp \
-		RandomGenerator.cpp
+		RandomGenerator.cpp \
+		AStar.cpp
+		
+NAME = ft_puzzle
 
 
 OBJS_DIR = build

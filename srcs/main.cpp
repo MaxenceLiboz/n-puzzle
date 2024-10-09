@@ -11,7 +11,7 @@ int main()
 
     //     std::vector<int> vec = parser.getPuzzle();
 
-    //     NPuzzle puzzle(vec, MANHATTAN_DISTANCE);
+    //     AStar puzzle(vec, MANHATTAN_DISTANCE);
     //     parser.parsing();
 
     //     puzzle.solve();
