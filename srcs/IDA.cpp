@@ -2,8 +2,6 @@
 
 IDA::IDA(std::vector<int> puzzle, Heuristic heuristic) {
     Node * node = new Node(puzzle, heuristic, NULL);
-    node->setNode();
-    openList.push(node);
     nodeList.push_back(node);
 }
 
@@ -13,8 +11,7 @@ IDA::IDA(unsigned int dim, Heuristic heuristic) {
     gen.generateRandom(dim);
 
     Node * node = new Node(gen.getPuzzle(), heuristic, NULL);
-    std::cout << *node << std::endl;
-    openList.push(node);
+    nodeList.push_back(node);
 }
 
 IDA::~IDA() {
@@ -32,7 +29,7 @@ IDA::~IDA() {
 void IDA::solve() {
     this->start = std::chrono::high_resolution_clock::now();
 
-    if (!openList.top()->isSolvable()) {
+    if (!nodeList.back()->isSolvable()) {
         throw std::invalid_argument("Puzzle is not solvable");
     } else {
         std::cout << "Puzzle is solvable, starting the algo ..." << std::endl;
@@ -40,60 +37,63 @@ void IDA::solve() {
 
     int costLimit = nodeList.back()->getHxScore();
 
-    std::vector<Node *> solution = NULL;
+    std::vector<Node *> solution;
+    bool run = true;
 
-    while (solution == NULL) {
+    while (run) {
 
-        costLimit, solution = depthLimitedSearch(0, nodeList, costLimit);
+        std::tie(solution, costLimit) = depthLimitedSearch(0, nodeList, costLimit);
+
+        if (solution.back() && solution.back()->isValid()) {
+
+            run = false;
+        }
+        if (costLimit == INT32_MAX) {
+
+            throw std::invalid_argument("Puzzle is not solvable");
+        }
     }
 
-    // this->totalNumberOfNodes = 1;
-    // this->totalNumberOfNodesInMemory = 1;
-
-    // while (!openList.empty() && !openList.top()->isValid()) {
-    //     if (closedList.size() + openList.size() > this->totalNumberOfNodesInMemory) {
-    //         this->totalNumberOfNodesInMemory = closedList.size() + openList.size();
-    //     }
-    //     Node *current;
-    //     while (!openList.empty()) {
-    //         current = openList.top();
-    //         openList.pop();
-    //         if (closedList.find(current) == closedList.end()) {
-    //             closedList.insert(current);
-    //             break;
-    //         } else {
-    //             delete current;
-    //         }
-    //     }
-
-    //     this->totalNumberOfNodes += current->setChildrenIntoList(openList, closedList);
-    // }
-
     this->end = std::chrono::high_resolution_clock::now();
-    // this->endNode = openList.top();
+    this->endNode = solution.back();
 
     printResult();
 }
 
-Node IDA::depthLimitedSearch(int startCost, int costLimit) {
+std::tuple<std::vector<Node *>, int> IDA::depthLimitedSearch(int startCost, std::vector<Node *> pathSoFar, int costLimit) {
 
     Node *current = nodeList.back();
 
     int currentCost =  current->getFxScore();
-    
-    if (currentCost > costLimit)
-        return None, costLimit;
-    if (current == goal)
-        return pathSoFar;
+    std::vector<Node*> returnVec;
 
-        new_start_cost = start_cost + edge_cost(node, s);
-        solution, new_cost_limit = depth_limited_search(new_start_cost, extend(path_so_far, s), cost_limit)
+    if (currentCost > costLimit) {
 
-        if solution != None:
-            return solution, new_cost_limit
-        next_cost_limit = min(next_cost_limit, new_cost_limit)
+        return std::make_tuple(returnVec, currentCost);
+    }
+    if (pathSoFar.back()->isValid()) {
+
+        return std::make_tuple(pathSoFar, costLimit);
+    }
+
+    int nextCostLimit = INT32_MAX;
+    for (Node * s : nodeList.back()->getChildrens()) {
+
+        int newStartCost = startCost + s->getHxScore();
+        pathSoFar.push_back(s);
+        
+        int newCostLimit;
+        std::tie(pathSoFar, newCostLimit) = depthLimitedSearch(newStartCost, pathSoFar, costLimit);
+
+        if (pathSoFar.back()->isValid()) {
+
+            return std::make_tuple(pathSoFar, newCostLimit);
+        }
+
+        nextCostLimit = std::min(nextCostLimit, newCostLimit);
+    }
     
-    return None, next_cost_limit
+    return std::make_tuple(returnVec, nextCostLimit);
 }
 
 void IDA::printResult() {

@@ -26,6 +26,7 @@ private:
     double totalNumberOfNodesInMemory;
 
     void printResult();
+    std::tuple<std::vector<Node *>, int> depthLimitedSearch(int startCost, std::vector<Node *> pathSoFar, int costLimit);
 
 public:
     IDA(std::vector<int> puzzle, Heuristic heuristic);
@@ -33,7 +34,6 @@ public:
     ~IDA();
 
     void solve();
-    Node depthLimitedSearch(int startCost, pathSoFar, int costLimit);
 };
 
 #endif

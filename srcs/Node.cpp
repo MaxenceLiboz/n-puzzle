@@ -340,6 +340,33 @@ int Node::setChildrenIntoList(std::priority_queue<Node *, std::vector<Node*>, Cm
     return children;
 }
 
+std::vector<Node *> Node::getChildrens() {
+    
+    std::vector<Node *> childrens;
+ 
+    std::vector<int> upPuzzle = this->moveUp();
+    if (upPuzzle.size() > 0) {
+        childrens.push_back(new Node(upPuzzle, heuristic, this));
+    }
+
+    std::vector<int> downPuzzle = this->moveDown();
+    if (downPuzzle.size() > 0) {
+        childrens.push_back(new Node(downPuzzle, heuristic, this));
+    }
+
+    std::vector<int> leftPuzzle = this->moveLeft();
+    if (leftPuzzle.size() > 0) {
+        childrens.push_back(new Node(leftPuzzle, heuristic, this));
+    }
+
+    std::vector<int> rightPuzzle = this->moveRight();
+    if (rightPuzzle.size() > 0) {
+        childrens.push_back(new Node(rightPuzzle, heuristic, this));
+    }
+    
+    return childrens;
+}
+
 std::ostream &operator<<(std::ostream &os, Node &Node) {
     std::vector<int> datapuzzle = Node.getPuzzle();
     for (size_t i = 0; i < datapuzzle.size(); i++) {

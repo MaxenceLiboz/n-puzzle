@@ -6,5 +6,6 @@
 #include "Parser.hpp"
 #include "AStar.hpp"
 #include "RandomGenerator.hpp"
+#include "IDA.hpp"
 
 #endif
