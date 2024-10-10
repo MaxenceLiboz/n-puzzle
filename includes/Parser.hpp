@@ -7,6 +7,8 @@
 #include "Node.hpp"
 #include <algorithm>
 
+struct ParsingStruct;
+
 class Parser {
 
 private:
@@ -21,7 +23,8 @@ private:
     void    _setPuzzle(std::vector<int> puzzle);
 
     void    _fillPuzzleVector(std::ifstream& inputFile);
-    void    _checkPuzzleValidity(std::vector<int> puzzle) const;
+    void    _checkPuzzleValidity() const;
+    int     _whileIsDigit(std::string line, std::size_t newIndex) const;
 
 public:
     // Constructors and Destructors

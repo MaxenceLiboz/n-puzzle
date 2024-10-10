@@ -24,48 +24,61 @@ void Parser::parsing() {
 
 void Parser::_fillPuzzleVector(std::ifstream& inputFile) {
 
-    std::vector<int> puzzle;
-    std::string line;
-    int lineCount = 0;
+    std::string         line;
+    bool                dimFill = false;
 
     while (std::getline(inputFile, line))
 	{
-        if (lineCount > 0) {
+        for (std::size_t i = 0; i < line.size(); i++) {
 
-            std::string::size_type posEndL = line.find('#');
-            if (posEndL == std::string::npos)
-                posEndL = line.size();
+            if (line[i] == '#')
+                break;
+            else if (!dimFill && std::isdigit(line[i])) {
 
-            if (lineCount == 1)
-                this->_setDim(std::atoi(line.substr(0, posEndL).c_str()));
-            else if (lineCount > 1) {
+                int newIndex = this->_whileIsDigit(line, i);
 
-                std::string::size_type posBlank = 0;
-                std::string::size_type posBlankTmp = 0;
-                std::size_t vectorSizeTmp = puzzle.size();
+                // An atoi is made for the entire number 
+                this->_setDim(std::atoi(line.substr(i, newIndex - i).c_str()));
+                dimFill = true;
 
-                while((posBlank = line.find(' ', posBlankTmp + 1)) != std::string::npos && posBlank < posEndL) {
-
-                    if (posBlankTmp != posBlank && line.at(posBlank - 1) != ' ')
-                        puzzle.push_back(std::atoi(line.substr(posBlankTmp, posBlank - posBlankTmp).c_str()));
-
-                    posBlankTmp = posBlank;
-                }
-
-                if (puzzle.size() == vectorSizeTmp + (this->_dim - 1))
-                    puzzle.push_back(std::atoi(line.substr(posBlankTmp, posBlank - posBlankTmp).c_str()));
-
+                break;
             }
-        }
+            else if (dimFill && std::isdigit(line[i])) {
 
-        lineCount++;
+                int newIndex = this->_whileIsDigit(line, i);
+
+                _puzzle.push_back(std::atoi(line.substr(i, newIndex - i).c_str()));
+
+                // Minus 1 because i will be increase before the next iteration
+                i = newIndex - 1;
+            }
+            else if (line[i] != ' ')
+                throw std::invalid_argument("Invalid arguments in the text file, at the line : \"" + line + "\"");
+
+
+
+        }
     }
 
-    this->_setPuzzle(puzzle);
-    this->_checkPuzzleValidity(puzzle);
+    this->_checkPuzzleValidity();
 }
 
-void Parser::_checkPuzzleValidity(std::vector<int> puzzle) const {
+int Parser::_whileIsDigit(std::string line, std::size_t newIndex) const {
+
+    while (std::isdigit(line[newIndex]) && newIndex < line.size()) {
+
+        newIndex++;
+    }
+
+    return newIndex;
+}
+
+void Parser::_checkPuzzleValidity() const {
+
+    std::vector<int> puzzle = _puzzle;
+
+    if (puzzle.size() != pow(_dim, 2))
+        throw std::invalid_argument("The dimensions of the puzzle does not match");
 
     std::sort(puzzle.begin(), puzzle.end());
 
