@@ -11,15 +11,15 @@ COLOR_BLUE	=	\033[36m
 ################################################################################
 CACHE = .cache
 SRCS_DIR = srcs
-SRCS = 	main.cpp \
-		Node.cpp \
-		Parser.cpp \
+SRCS = 	main.cpp 			\
+		Node.cpp 			\
+		Parser.cpp 			\
 		RandomGenerator.cpp \
-		AStar.cpp \
-		IDA.cpp
+		AStar.cpp 			\
+		IDA.cpp				\
+		InputParser.cpp
 		
 NAME = n_puzzle
-		InputParser.cpp
 
 
 OBJS_DIR = build

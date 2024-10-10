@@ -253,7 +253,6 @@ bool Node::isSolvable() {
 
 bool Node::isValid() {
     if (this->getHxScore() == 0) {
-        std::cout << this->getHxScore() << std::endl;
         return true;
     }
     return false;

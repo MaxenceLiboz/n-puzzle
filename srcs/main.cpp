@@ -21,21 +21,26 @@ int main(int argc, char **argv)
             const std::string file = input.getCmdFromOption("-f");
 
             if (algo == "0" && !generator.empty()) {
-                NPuzzle aStar = NPuzzle(std::atoi(generator.data()), heuristic);
+                AStar aStar = AStar(std::atoi(generator.data()), heuristic);
                 aStar.solve();
                 return 0;
             } else if (algo == "0" && !file.empty()) {
                 Parser parser = Parser(file, heuristic);
                 parser.parsing();
 
-                NPuzzle puzzle(parser.getPuzzle(), MANHATTAN_DISTANCE);
+                AStar puzzle(parser.getPuzzle(), MANHATTAN_DISTANCE);
                 puzzle.solve();
                 return 0;
             } else if (algo == "1" && !generator.empty()) {
+                IDA ida = IDA(std::atoi(generator.data()), heuristic);
+                ida.solve();
                 return 0;
             } else if (algo == "1" && !file.empty()) {
                 Parser parser = Parser(file, heuristic);                
                 parser.parsing();
+
+                IDA ida = IDA(parser.getPuzzle(), heuristic);
+                ida.solve();
                 return 0;
             }
             else {

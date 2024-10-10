@@ -6,6 +6,7 @@ IDA::IDA(std::vector<int> puzzle, Heuristic heuristic) {
     startingPath.push_back(node);
 
     this->totalNumberOfNodes = 1;
+    this->totalNumberOfNodesInMemory = 1;
     this->nodes = 1;
 }
 
