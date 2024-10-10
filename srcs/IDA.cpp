@@ -8,6 +8,7 @@ IDA::IDA(std::vector<int> puzzle, Heuristic heuristic) {
     this->totalNumberOfNodes = 1;
     this->totalNumberOfNodesInMemory = 1;
     this->nodes = 1;
+    this->endNode = NULL;
 }
 
 IDA::IDA(unsigned int dim, Heuristic heuristic) {
@@ -21,15 +22,19 @@ IDA::IDA(unsigned int dim, Heuristic heuristic) {
     this->totalNumberOfNodes = 1;
     this->totalNumberOfNodesInMemory = 1;
     this->nodes = 1;
+    this->endNode = NULL;
 }
 
 IDA::~IDA() {
 
-    while (this->endNode != NULL) {
-
-        Node * current = this->endNode;
-        this->endNode = this->endNode->getParent();
-        delete current;
+    if (this->endNode != NULL) {
+        while (this->endNode != NULL) {
+            Node * current = this->endNode;
+            this->endNode = this->endNode->getParent();
+            delete current;
+        }
+    } else {
+        delete startingPath.back();
     }
 }
 
