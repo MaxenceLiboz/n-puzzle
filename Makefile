@@ -26,7 +26,7 @@ OBJS = $(addprefix $(OBJS_DIR)/,$(subst $(SRCS_DIR),,$(SRCS:.cpp=.o)))
 
 NAME = n_puzzle
 CC = c++
-CFLAGS = -Wall -Wextra -Werror -MMD -MP -Iincludes -g3 -fsanitize=address #-03
+CFLAGS = -Wall -Wextra -Werror -MMD -MP -Iincludes -O3 #-g3 -fsanitize=address
 RM = rm -rf
 
 # Set the number of object files 

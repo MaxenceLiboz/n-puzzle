@@ -3,6 +3,9 @@
 IDA::IDA(std::vector<int> puzzle, Heuristic heuristic) {
     Node * node = new Node(puzzle, heuristic, NULL);
     nodeList.push_back(node);
+
+    // this->totalNumberOfNodes = 1;
+    // this->totalNumberOfNodesInMemory = 1;
 }
 
 IDA::IDA(unsigned int dim, Heuristic heuristic) {
@@ -12,6 +15,9 @@ IDA::IDA(unsigned int dim, Heuristic heuristic) {
 
     Node * node = new Node(gen.getPuzzle(), heuristic, NULL);
     nodeList.push_back(node);
+        
+    this->totalNumberOfNodes = 1;
+    this->nodes = 1;
 }
 
 IDA::~IDA() {
@@ -75,12 +81,15 @@ std::tuple<std::vector<Node *>, int> IDA::depthLimitedSearch(int startCost, std:
 
     int nextCostLimit = INT32_MAX;
     std::vector<Node *> childrens =  current->getChildrens();
+    this->nodes += childrens.size();
+    this->totalNumberOfNodes += childrens.size();
     for (Node * s : childrens) {
 
         int newStartCost = startCost + s->getHxScore();
         pathSoFar.push_back(s);
         
         int newCostLimit;
+
         std::tie(pathSoFar, newCostLimit) = depthLimitedSearch(newStartCost, pathSoFar, costLimit);
 
         if (pathSoFar.size() > 0 && pathSoFar.back()->isValid()) {
@@ -96,6 +105,10 @@ std::tuple<std::vector<Node *>, int> IDA::depthLimitedSearch(int startCost, std:
 void IDA::freeChildrens(std::vector<Node *> childrens, Node * current) {
     for (Node * child : childrens) {
         if ( child != current) {
+            if (this->totalNumberOfNodesInMemory < this->nodes) {
+                this->totalNumberOfNodesInMemory = this->nodes;
+            }
+            this->nodes -= 1;
             delete child;
         }
     }

@@ -24,6 +24,7 @@ private:
     Node *endNode;
     double totalNumberOfNodes;
     double totalNumberOfNodesInMemory;
+    double nodes;
 
     void printResult();
     std::tuple<std::vector<Node *>, int> depthLimitedSearch(int startCost, std::vector<Node *> pathSoFar, int costLimit);
