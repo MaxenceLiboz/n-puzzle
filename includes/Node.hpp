@@ -16,6 +16,8 @@ enum Heuristic
     EUCLEDIAN_DISTANCE
 };
 
+Heuristic getHeuristicFromValue(const std::string &heuristic);
+
 struct CmpNodePtr;
 
 class Node

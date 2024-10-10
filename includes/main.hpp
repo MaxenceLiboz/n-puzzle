@@ -7,5 +7,6 @@
 #include "AStar.hpp"
 #include "RandomGenerator.hpp"
 #include "IDA.hpp"
+#include "InputParser.hpp"
 
 #endif

@@ -399,3 +399,17 @@ size_t HashNode::operator()(const Node *node) const {
     }
     return hash;
 }
+
+Heuristic getHeuristicFromValue(const std::string &heuristic) {
+    if (heuristic == "0") {
+        return MANHATTAN_DISTANCE;
+    }
+    else if (heuristic == "1") {
+        return EUCLEDIAN_DISTANCE;
+    }
+    else if (heuristic == "2") {
+        return MISPLACED_TILES;
+    } else {
+        throw std::invalid_argument("Heuristic value not supported");
+    }
+}

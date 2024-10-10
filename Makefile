@@ -19,13 +19,14 @@ SRCS = 	main.cpp \
 		IDA.cpp
 		
 NAME = n_puzzle
+		InputParser.cpp
 
 
 OBJS_DIR = build
 OBJS = $(addprefix $(OBJS_DIR)/,$(subst $(SRCS_DIR),,$(SRCS:.cpp=.o)))
 
 CC = c++
-CFLAGS = -Wall -Wextra -Werror -MMD -MP -Iincludes -O3 #-g3 -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -MMD -MP -Iincludes -g3 #-fsanitize=address -O3
 RM = rm -rf
 
 # Set the number of object files 

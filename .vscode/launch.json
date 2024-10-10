@@ -7,8 +7,14 @@
             "request": "launch",
             "program": "${workspaceFolder}/n_puzzle",
             "args": [
-                // "${workspaceFolder}/puzzles/ngen.txt",
-                // "0"
+                "-a",
+                "0",
+                "-hx",
+                "0",
+                // "-g",
+                // "3",
+                "-f",
+                "${workspaceFolder}/puzzles/default.txt"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/srcs",
