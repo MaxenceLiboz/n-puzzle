@@ -1,11 +1,12 @@
 #include "IDA.hpp"
 
 IDA::IDA(std::vector<int> puzzle, Heuristic heuristic) {
+
     Node * node = new Node(puzzle, heuristic, NULL);
     nodeList.push_back(node);
 
-    // this->totalNumberOfNodes = 1;
-    // this->totalNumberOfNodesInMemory = 1;
+    this->totalNumberOfNodes = 1;
+    this->nodes = 1;
 }
 
 IDA::IDA(unsigned int dim, Heuristic heuristic) {
@@ -21,18 +22,19 @@ IDA::IDA(unsigned int dim, Heuristic heuristic) {
 }
 
 IDA::~IDA() {
-    while (!openList.empty()) {
-        Node *child = openList.top();
-        openList.pop();
-        delete child;
-    }
 
-    for (std::unordered_set<Node *, HashNode>::iterator it = closedList.begin(); it != closedList.end(); it++) {
-        delete *it;
+    this->endNode = this->nodeList.back();
+
+    while (this->endNode != NULL) {
+
+        Node * current = this->endNode;
+        this->endNode = this->endNode->getParent();
+        delete current;
     }
 }
 
 void IDA::solve() {
+
     this->start = std::chrono::high_resolution_clock::now();
 
     if (!nodeList.back()->isSolvable()) {
@@ -42,7 +44,6 @@ void IDA::solve() {
     }
 
     int costLimit = nodeList.back()->getHxScore();
-
     std::vector<Node *> solution;
     bool run = true;
 
@@ -50,7 +51,7 @@ void IDA::solve() {
 
         std::tie(solution, costLimit) = depthLimitedSearch(0, nodeList, costLimit);
 
-        if (solution.size() > 0 && solution.back()->isValid()) {
+        if (!solution.empty() && solution.back()->isValid()) {
             run = false;
         }
         if (costLimit == INT32_MAX) {
@@ -61,50 +62,53 @@ void IDA::solve() {
 
     this->end = std::chrono::high_resolution_clock::now();
     this->endNode = solution.back();
+    this->nodeList = solution;
 
     printResult();
 }
 
 std::tuple<std::vector<Node *>, int> IDA::depthLimitedSearch(int startCost, std::vector<Node *> pathSoFar, int costLimit) {
 
-    Node *current = pathSoFar.back();
-
-    int currentCost =  current->getFxScore();
     std::vector<Node*> returnVec;
+    Node *current = pathSoFar.back();
+    int currentCost =  current->getFxScore();
 
     if (currentCost > costLimit) {
         return std::make_tuple(returnVec, currentCost);
     }
-    if (pathSoFar.size() > 0 && pathSoFar.back()->isValid()) {
+    if (!pathSoFar.empty() && pathSoFar.back()->isValid()) {
         return std::make_tuple(pathSoFar, costLimit);
     }
 
     int nextCostLimit = INT32_MAX;
+
     std::vector<Node *> childrens =  current->getChildrens();
     this->nodes += childrens.size();
     this->totalNumberOfNodes += childrens.size();
+
     for (Node * s : childrens) {
 
+        int newCostLimit;
         int newStartCost = startCost + s->getHxScore();
         pathSoFar.push_back(s);
-        
-        int newCostLimit;
 
         std::tie(pathSoFar, newCostLimit) = depthLimitedSearch(newStartCost, pathSoFar, costLimit);
 
-        if (pathSoFar.size() > 0 && pathSoFar.back()->isValid()) {
+        if (!pathSoFar.empty() && pathSoFar.back()->isValid()) {
             this->freeChildrens(childrens, s);
             return std::make_tuple(pathSoFar, newCostLimit);
         }
         nextCostLimit = std::min(nextCostLimit, newCostLimit);
     }
+
     this->freeChildrens(childrens, NULL);
     return std::make_tuple(returnVec, nextCostLimit);
 }
 
 void IDA::freeChildrens(std::vector<Node *> childrens, Node * current) {
+
     for (Node * child : childrens) {
-        if ( child != current) {
+        if (child != current) {
             if (this->totalNumberOfNodesInMemory < this->nodes) {
                 this->totalNumberOfNodesInMemory = this->nodes;
             }
@@ -115,12 +119,11 @@ void IDA::freeChildrens(std::vector<Node *> childrens, Node * current) {
 }
 
 void IDA::printResult() {
+
     double depth = this->endNode->getGxScore();
     while (this->endNode != NULL) {
-        Node * current = this->endNode;
         std::cout << *this->endNode << std::endl;
         this->endNode = this->endNode->getParent();
-        delete current;
     }
     std::cout << "Time complexity: " << this->totalNumberOfNodes << std::endl;
     std::cout << "Space complexity: " << this->totalNumberOfNodesInMemory << std::endl;

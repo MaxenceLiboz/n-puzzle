@@ -16,8 +16,6 @@
 class IDA
 {
 private:
-    std::priority_queue<Node *, std::vector<Node*>, CmpNodePtr> openList;
-    std::unordered_set<Node *, HashNode> closedList;
     std::vector<Node *> nodeList;
     std::chrono::_V2::system_clock::time_point start;
     std::chrono::_V2::system_clock::time_point end;
