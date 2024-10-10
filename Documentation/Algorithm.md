@@ -1,14 +1,14 @@
 [<-- Back](../README.md)
 ## Algorithms
 
-**A-star (A\*)** can be used to solve the n-puzzle. You can find **[here](https://algorithmsinsight.wordpress.com/graph-theory-2/a-star-in-general/implementing-a-star-to-solve-n-puzzle/)** a realy good explaination of it.  
+**A-star (A\*)** can be used to solve the n-puzzle. You can find **[here](https://algorithmsinsight.wordpress.com/graph-theory-2/a-star-in-general/implementing-a-star-to-solve-n-puzzle/)** a really good explanation of it.  
 If I have to summurize it:  
-- First, I would say that each node represent a state of the puzzle. Therefore, each node has a maxium of 4 new childrens (the blank part going up, down, right or left). It will then expend until the n-puzzle is solve.
+- First, I would say that each node represent a state of the puzzle. Therefore, each node has a maximum of 4 new childrens (the blank part going up, down, right or left). It will then expend until the n-puzzle is solve.
 - Second, each node is going to be given a score depending on the **heuristic** which is named **f**. The node with the lower **f score** is chosen to continue the loop.  
 
-This algorithm is storing in an **open** list the nodes that are not visited and in a **closed** list the nodes that are visisted, if there are no more **open** nodes the n-puzzle is not solvable.  
+This algorithm is storing in an **open** list the nodes that are not visited and in a **closed** list the nodes that are visited, if there are no more **open** nodes the n-puzzle is not solvable.  
 
-**Iterative Deepening (IDA\*)** is going to be the same as the **A-start** algorithm but it will use less memory. Indeed, it does not use the **open** and **closed** list, instead it use a threshold that is going to be set arbritrary at first. Once the threshold is reach, the smalest **f score** node is going to be the new threshold. Then, the algorithm restart from the begining.  
+**Iterative Deepening (IDA\*)** is going to be the same as the **A-start** algorithm but it will use less memory. Indeed, it does not use the **open** and **closed** list, instead it use a threshold that is going to be set with the heuristic of the first value. Once the threshold is reach, the smalest **f score** node is going to be the new threshold. Then, the algorithm restart from the begining. You can find **[here](https://citeseerx.ist.psu.edu/document?repid=rep1&type=pdf&doi=831ff239ba77b2a8eaed473ffbfa22d61b7f5d19)** a really good explanation of it and a good knowledge of the Star Algorithms. 
 
 Therefore, we have here a choice to make, either take a more time efficient algorithm, or take a more space efficient algroithm.
 It will need to be chose by the team, but we need to keep in mind that the correction is going to be more focus on the 3x3.
