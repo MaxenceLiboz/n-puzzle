@@ -1,5 +1,5 @@
-#ifndef NPUZZLE_HPP
-#define NPUZZLE_HPP
+#ifndef ASTAR_HPP
+#define ASTAR_HPP
 
 #include <vector>
 #include <queue>
@@ -12,7 +12,7 @@
 #include "Node.hpp"
 #include "RandomGenerator.hpp"
 
-class NPuzzle
+class AStar
 {
 private:
     std::priority_queue<Node *, std::vector<Node*>, CmpNodePtr> openList;
@@ -26,9 +26,9 @@ private:
     void printResult();
 
 public:
-    NPuzzle(std::vector<int> puzzle, Heuristic heuristic);
-    NPuzzle(unsigned int dim, Heuristic heuristic);
-    ~NPuzzle();
+    AStar(std::vector<int> puzzle, Heuristic heuristic);
+    AStar(unsigned int dim, Heuristic heuristic);
+    ~AStar();
 
     void solve();
 };

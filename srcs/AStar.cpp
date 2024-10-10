@@ -1,11 +1,11 @@
-#include "NPuzzle.hpp"
+#include "AStar.hpp"
 
-NPuzzle::NPuzzle(std::vector<int> puzzle, Heuristic heuristic) {
+AStar::AStar(std::vector<int> puzzle, Heuristic heuristic) {
     Node * node = new Node(puzzle, heuristic, NULL);
     openList.push(node);
 }
 
-NPuzzle::NPuzzle(unsigned int dim, Heuristic heuristic) {
+AStar::AStar(unsigned int dim, Heuristic heuristic) {
 
     RandomGenerator gen;
     gen.generateRandom(dim);
@@ -14,7 +14,7 @@ NPuzzle::NPuzzle(unsigned int dim, Heuristic heuristic) {
     openList.push(node);
 }
 
-NPuzzle::~NPuzzle() {
+AStar::~AStar() {
     while (!openList.empty()) {
         Node *child = openList.top();
         openList.pop();
@@ -26,7 +26,7 @@ NPuzzle::~NPuzzle() {
     }
 }
 
-void NPuzzle::solve() {
+void AStar::solve() {
     this->start = std::chrono::high_resolution_clock::now();
 
     if (!openList.top()->isSolvable()) {
@@ -62,7 +62,7 @@ void NPuzzle::solve() {
     printResult();
 }
 
-void NPuzzle::printResult() {
+void AStar::printResult() {
     double depth = this->endNode->getGxScore();
     while (this->endNode != NULL) {
         std::cout << *this->endNode << std::endl;
