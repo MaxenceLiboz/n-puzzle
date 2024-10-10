@@ -253,7 +253,6 @@ bool Node::isSolvable() {
 
 bool Node::isValid() {
     if (this->getHxScore() == 0) {
-        std::cout << this->getHxScore() << std::endl;
         return true;
     }
     return false;
@@ -398,4 +397,18 @@ size_t HashNode::operator()(const Node *node) const {
         hash = hash * prime + std::hash<int>{}(node->getPuzzle()[i]);
     }
     return hash;
+}
+
+Heuristic getHeuristicFromValue(const std::string &heuristic) {
+    if (heuristic == "0") {
+        return MANHATTAN_DISTANCE;
+    }
+    else if (heuristic == "1") {
+        return EUCLEDIAN_DISTANCE;
+    }
+    else if (heuristic == "2") {
+        return MISPLACED_TILES;
+    } else {
+        throw std::invalid_argument("Heuristic value not supported");
+    }
 }

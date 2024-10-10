@@ -11,12 +11,13 @@ COLOR_BLUE	=	\033[36m
 ################################################################################
 CACHE = .cache
 SRCS_DIR = srcs
-SRCS = 	main.cpp \
-		Node.cpp \
-		Parser.cpp \
+SRCS = 	main.cpp 			\
+		Node.cpp 			\
+		Parser.cpp 			\
 		RandomGenerator.cpp \
-		AStar.cpp \
-		IDA.cpp
+		AStar.cpp 			\
+		IDA.cpp				\
+		InputParser.cpp
 		
 NAME = n_puzzle
 
@@ -25,7 +26,7 @@ OBJS_DIR = build
 OBJS = $(addprefix $(OBJS_DIR)/,$(subst $(SRCS_DIR),,$(SRCS:.cpp=.o)))
 
 CC = c++
-CFLAGS = -Wall -Wextra -Werror -MMD -MP -Iincludes -O3 #-g3 -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -MMD -MP -Iincludes -g3 #-fsanitize=address -O3
 RM = rm -rf
 
 # Set the number of object files 

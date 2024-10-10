@@ -11,8 +11,7 @@ class Parser {
 
 private:
 
-    int                 _argsNumber;
-    char                **_args;
+    std::string         _fileName;
     enum Heuristic      _heuristic;
     std::vector<int>    _puzzle;
     int                 _dim;
@@ -26,7 +25,7 @@ private:
 
 public:
     // Constructors and Destructors
-    Parser(int argsNumber, char **args);
+    Parser(const std::string & fileName, Heuristic Heuristic);
     ~Parser();
 
     // Getters

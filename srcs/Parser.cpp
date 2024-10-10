@@ -1,43 +1,19 @@
 #include "Parser.hpp"
 
-Parser::Parser(int argsNumber, char **args) : _argsNumber(argsNumber), _args(args) {}
+Parser::Parser(const std::string &fileName, Heuristic heuristic) : _fileName(fileName), _heuristic(heuristic) {}
 
 Parser::~Parser() {}
 
 void Parser::parsing() {
 
-    if (this->_argsNumber != 3) {
-
-		throw std::invalid_argument("Need two arguments (input file and heuristic number) 0 : MANHATTAN_DISTANCE, 1 : MISPLACED_TILES, 2 : LINEAR_CONFLICT_AND_MANHATTAN_DISTANCE or 4 : EUCLEDIAN_DISTANCE");
-	}
-
     std::ifstream inputFile;
-    inputFile.open(this->_args[1]);
+    inputFile.open(this->_fileName);
 	if (inputFile.fail()) {
-		
+	
 		throw std::invalid_argument("Invalid text file");
 	}
 
-    int whichHeuristic;
-    sscanf(this->_args[2], "%d", &whichHeuristic);
-
-    switch (whichHeuristic) {
-
-        case 0:
-            this->_heuristic = MANHATTAN_DISTANCE;
-            break;
-        case 1:
-            this->_heuristic = MISPLACED_TILES;
-            break;
-        case 3:
-            this->_heuristic = EUCLEDIAN_DISTANCE;
-            break;
-        default:
-            throw std::invalid_argument("Wrong heuristic number, must be 0 : MANHATTAN_DISTANCE, 1 : MISPLACED_TILES, 2 : LINEAR_CONFLICT_AND_MANHATTAN_DISTANCE or 3 : EUCLEDIAN_DISTANCE");
-    }
-
     try {
-
         this->_fillPuzzleVector(inputFile);
     }
     catch (std::exception &e){
@@ -97,7 +73,7 @@ void Parser::_checkPuzzleValidity(std::vector<int> puzzle) const {
     for (int puzzleCase : puzzle) {
 
         if (i != puzzleCase)
-            throw std::invalid_argument("Numbers inside of the puzzle are not in the good range");
+            throw std::invalid_argument("Please make sure the input file is in correct format");
 
         i++;
     }
