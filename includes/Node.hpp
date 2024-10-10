@@ -63,6 +63,7 @@ public:
     Node *getParent();
     int getDim();
     int getBlankTileIndex() const;
+    std::vector<Node *> getChildrens() ;
 
     // Heuristic functions
     double calculateManhattanDistance();

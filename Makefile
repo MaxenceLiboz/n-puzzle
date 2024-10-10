@@ -13,17 +13,19 @@ CACHE = .cache
 SRCS_DIR = srcs
 SRCS = 	main.cpp \
 		Node.cpp \
-		NPuzzle.cpp \
 		Parser.cpp \
-		RandomGenerator.cpp
+		RandomGenerator.cpp \
+		AStar.cpp \
+		IDA.cpp
+		
+NAME = n_puzzle
 
 
 OBJS_DIR = build
 OBJS = $(addprefix $(OBJS_DIR)/,$(subst $(SRCS_DIR),,$(SRCS:.cpp=.o)))
 
-NAME = n_puzzle
 CC = c++
-CFLAGS = -Wall -Wextra -Werror -MMD -MP -Iincludes -O3 #-g3 #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -MMD -MP -Iincludes -O3 #-g3 -fsanitize=address
 RM = rm -rf
 
 # Set the number of object files 
