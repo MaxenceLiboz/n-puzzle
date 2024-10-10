@@ -3,7 +3,7 @@
 IDA::IDA(std::vector<int> puzzle, Heuristic heuristic) {
 
     Node * node = new Node(puzzle, heuristic, NULL);
-    nodeList.push_back(node);
+    startingPath.push_back(node);
 
     this->totalNumberOfNodes = 1;
     this->nodes = 1;
@@ -15,15 +15,13 @@ IDA::IDA(unsigned int dim, Heuristic heuristic) {
     gen.generateRandom(dim);
 
     Node * node = new Node(gen.getPuzzle(), heuristic, NULL);
-    nodeList.push_back(node);
+    startingPath.push_back(node);
         
     this->totalNumberOfNodes = 1;
     this->nodes = 1;
 }
 
 IDA::~IDA() {
-
-    this->endNode = this->nodeList.back();
 
     while (this->endNode != NULL) {
 
@@ -37,19 +35,18 @@ void IDA::solve() {
 
     this->start = std::chrono::high_resolution_clock::now();
 
-    if (!nodeList.back()->isSolvable()) {
+    if (!startingPath.back()->isSolvable()) {
         throw std::invalid_argument("Puzzle is not solvable");
     } else {
         std::cout << "Puzzle is solvable, starting the algo ..." << std::endl;
     }
 
-    int costLimit = nodeList.back()->getHxScore();
-    std::vector<Node *> solution;
+    int costLimit = startingPath.back()->getHxScore();
     bool run = true;
 
     while (run) {
 
-        std::tie(solution, costLimit) = depthLimitedSearch(0, nodeList, costLimit);
+        std::tie(solution, costLimit) = depthLimitedSearch(0, startingPath, costLimit);
 
         if (!solution.empty() && solution.back()->isValid()) {
             run = false;
@@ -62,7 +59,6 @@ void IDA::solve() {
 
     this->end = std::chrono::high_resolution_clock::now();
     this->endNode = solution.back();
-    this->nodeList = solution;
 
     printResult();
 }
@@ -125,6 +121,7 @@ void IDA::printResult() {
         std::cout << *this->endNode << std::endl;
         this->endNode = this->endNode->getParent();
     }
+    this->endNode = this->solution.back();
     std::cout << "Time complexity: " << this->totalNumberOfNodes << std::endl;
     std::cout << "Space complexity: " << this->totalNumberOfNodesInMemory << std::endl;
     std::cout << "Time taken : " << std::chrono::duration_cast<std::chrono::milliseconds>(this->end - this->start).count() << " ms" << std::endl;

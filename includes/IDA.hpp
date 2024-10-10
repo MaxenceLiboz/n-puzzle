@@ -16,7 +16,8 @@
 class IDA
 {
 private:
-    std::vector<Node *> nodeList;
+    std::vector<Node *> startingPath;
+    std::vector<Node *> solution;
     std::chrono::_V2::system_clock::time_point start;
     std::chrono::_V2::system_clock::time_point end;
     Node *endNode;
