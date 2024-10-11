@@ -31,8 +31,9 @@ void Parser::_fillPuzzleVector(std::ifstream& inputFile) {
 	{
         for (std::size_t i = 0; i < line.size(); i++) {
 
-            if (line[i] == '#')
+            if (line[i] == '#') {
                 break;
+            }
             else if (!dimFill && std::isdigit(line[i])) {
 
                 int newIndex = this->_whileIsDigit(line, i);
@@ -40,6 +41,14 @@ void Parser::_fillPuzzleVector(std::ifstream& inputFile) {
                 // An atoi is made for the entire number 
                 this->_setDim(std::atoi(line.substr(i, newIndex - i).c_str()));
                 dimFill = true;
+
+                for (i = newIndex; i < line.size(); i++) {
+                    
+                    if (line[i] == '#')
+                        break;
+                    else if (line[i] != ' ')
+                        throw std::invalid_argument("Invalid arguments in the text file, this line should only contain the puzzle dimension : \"" + line + "\"");
+                }
 
                 break;
             }
@@ -52,10 +61,9 @@ void Parser::_fillPuzzleVector(std::ifstream& inputFile) {
                 // Minus 1 because i will be increase before the next iteration
                 i = newIndex - 1;
             }
-            else if (line[i] != ' ')
+            else if (line[i] != ' ') {
                 throw std::invalid_argument("Invalid arguments in the text file, at the line : \"" + line + "\"");
-
-
+            }
 
         }
     }
